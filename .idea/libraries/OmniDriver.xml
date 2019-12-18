@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="OmniDriver">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/OmniDriver.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
