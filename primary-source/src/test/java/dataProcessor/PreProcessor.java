@@ -1,5 +1,7 @@
 package dataProcessor;
 
+import methodsLibrary.SNV_JAVA;
+
 import java.math.BigDecimal;
 
 public class PreProcessor {
@@ -42,5 +44,26 @@ public class PreProcessor {
 
         return d;
     }
+
+    /**
+     * invoke preprocess methods
+     * @param methodName
+     * @param data
+     */
+    public double[][] preProcess(String methodName,double[][] data){
+        double[][] spectraAfterPreProcess;
+        switch (methodName){
+            case "SNV":
+                SNV_JAVA snv_java=new SNV_JAVA(data);
+                snv_java.invokeMethod();
+                snv_java.parseResult();
+                spectraAfterPreProcess=snv_java.getResult();
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + methodName);
+        }
+        return spectraAfterPreProcess;
+    }
+
 
 }
