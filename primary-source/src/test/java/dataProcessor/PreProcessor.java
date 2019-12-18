@@ -49,15 +49,20 @@ public class PreProcessor {
      * invoke preprocess methods
      * @param methodName
      * @param data
+     * @return
      */
     public double[][] preProcess(String methodName,double[][] data){
-        double[][] spectraAfterPreProcess;
+        double[][] spectraAfterPreProcess = new double[data.length][data[0].length];
         switch (methodName){
             case "SNV":
                 SNV_JAVA snv_java=new SNV_JAVA(data);
                 snv_java.invokeMethod();
                 snv_java.parseResult();
                 spectraAfterPreProcess=snv_java.getResult();
+                break;
+            case "MSC":
+                break;
+            case "SG":
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + methodName);

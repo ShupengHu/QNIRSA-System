@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ExcelManager {
     private List<Object> listO=new ArrayList<Object>();
-    private List<Double[]> listD=new ArrayList<Double[]>();
+    private List<double[]> listD=new ArrayList<double[]>();
 
     /**
      * Import data from excel with template
@@ -35,14 +35,14 @@ public class ExcelManager {
         InputStream is=new FileInputStream(fileName);
         XSSFWorkbook excel=new XSSFWorkbook(is);
         XSSFSheet sheet=excel.getSheetAt(0);
-        listD =new ArrayList<Double[]>();
+        listD =new ArrayList<double[]>();
         /**
          *loop for extracting data from excel
          *Example: excel size= 201x936. sheet.getLastRowNum()=200; row.getLastCellNum()=936
          */
         for (int i=0;i<sheet.getLastRowNum()+1;i++){
             XSSFRow row=sheet.getRow(i);
-            Double[] d=new Double[row.getLastCellNum()];
+            double[] d=new double[row.getLastCellNum()];
             for(int j=0;j<row.getLastCellNum();j++){
                 XSSFCell cell=row.getCell(j);
                 d[j]=cell.getNumericCellValue();
@@ -69,7 +69,7 @@ public class ExcelManager {
      * @param list data
      * @throws Exception
      */
-    public void writeExcel (String fileName, List<Double[]> list) throws Exception{
+    public void writeExcel (String fileName, List<double[]> list) throws Exception{
         File file= new File(fileName);
         if (file.exists()==false){
             file.createNewFile();
@@ -97,7 +97,7 @@ public class ExcelManager {
         return listO;
     }
 
-    public List<Double[]> getListD(){
+    public List<double[]> getListD(){
 
         return listD;
     }
