@@ -47,6 +47,107 @@ new FormModel {
 						"width": 111
 						"height": 39
 					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "parameterlabel1"
+						"text": "Parameter 1:"
+						"font": new com.jformdesigner.model.SwingDerivedFont( null, 0, 3, false )
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+						"x": 30
+						"y": 145
+						"width": 90
+						"height": 40
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "parameterlabel2"
+						"text": "Parameter 2:"
+						"font": new com.jformdesigner.model.SwingDerivedFont( null, 0, 3, false )
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+						"x": 30
+						"y": 205
+						"width": 90
+						"height": 45
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "parameterlabel3"
+						"text": "Parameter 3:"
+						"font": new com.jformdesigner.model.SwingDerivedFont( null, 0, 3, false )
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+						"x": 30
+						"y": 265
+						"width": 97
+						"height": 40
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "parameterlabel4"
+						"text": "Parameter 4:"
+						"font": new com.jformdesigner.model.SwingDerivedFont( null, 0, 3, false )
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+						"x": 30
+						"y": 320
+						"width": 94
+						"height": 47
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "parameterlabel5"
+						"text": "Parameter 5:"
+						"font": new com.jformdesigner.model.SwingDerivedFont( null, 0, 3, false )
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+						"x": 30
+						"y": 385
+						"width": 95
+						"height": 45
+					} )
+					add( new FormComponent( "javax.swing.JTextField" ) {
+						name: "parameterField1"
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+						"x": 125
+						"y": 150
+						"width": 74
+						"height": 34
+					} )
+					add( new FormComponent( "javax.swing.JTextField" ) {
+						name: "parameterField2"
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+						"width": 74
+						"height": 34
+						"x": 125
+						"y": 210
+					} )
+					add( new FormComponent( "javax.swing.JTextField" ) {
+						name: "parameterField3"
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+						"width": 74
+						"height": 34
+						"x": 125
+						"y": 270
+					} )
+					add( new FormComponent( "javax.swing.JTextField" ) {
+						name: "parameterField4"
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+						"width": 74
+						"height": 34
+						"x": 125
+						"y": 325
+					} )
+					add( new FormComponent( "javax.swing.JTextField" ) {
+						name: "parameterField5"
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+						"width": 74
+						"height": 34
+						"x": 125
+						"y": 390
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "confirmButton"
+						"text": "Confirm"
+						"font": new com.jformdesigner.model.SwingDerivedFont( null, 0, 5, false )
+						addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "confirmButtonMouseClicked", true ) )
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+						"x": 250
+						"y": 360
+						"width": 145
+						"height": 65
+					} )
 				}, new FormLayoutConstraints( class java.lang.String ) {
 					"value": "Center"
 				} )

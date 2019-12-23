@@ -13,8 +13,8 @@ public class OmniDriver implements Spectrometer {
     private int spectrometer_quantity=1;
     private HashMap<String,String> specInfo=new HashMap<String, String>();
 
-    private int usec;
-    private int smoothingDegrees;
+    private int time;
+    private int smoothness;
     private int numberOfScansToAverage;
     private int mode;
 
@@ -36,14 +36,14 @@ public class OmniDriver implements Spectrometer {
 
     /**
      * set input parameters for spectrometer
-     * @param usec
+     * @param time
      * @param numberOfScansToAverage
-     * @param smoothingDegrees
+     * @param smoothness
      * @param mode
      */
-    public void setInput(int usec,int numberOfScansToAverage,int smoothingDegrees, int mode) {
-        this.usec=usec;
-        this.smoothingDegrees=smoothingDegrees;
+    public void setInput(int time,int numberOfScansToAverage,int smoothness, int mode) {
+        this.time=time;
+        this.smoothness=smoothness;
         this.numberOfScansToAverage=numberOfScansToAverage;
         this.mode=mode;
     }
@@ -82,9 +82,9 @@ public class OmniDriver implements Spectrometer {
          * set parameters
          */
         //integral time:ms
-        this.wrapper.setIntegrationTime(spectrometer_index, usec);
+        this.wrapper.setIntegrationTime(spectrometer_index, time);
         //smoothing degree
-        this.wrapper.setBoxcarWidth(spectrometer_index,smoothingDegrees);
+        this.wrapper.setBoxcarWidth(spectrometer_index,smoothness);
         //number of scans for a spectrum
         this.wrapper.setScansToAverage(spectrometer_index, numberOfScansToAverage);
         /**

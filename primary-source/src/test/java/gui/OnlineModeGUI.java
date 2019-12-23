@@ -25,16 +25,20 @@ public class OnlineModeGUI extends JFrame {
     private NIRQuest nirQuest;
     private OmniDriver omniDriver;
 
+    //parameters
+    private String selectedSpectrometer="";
+    private double[] wavelengths;
+    private double[] spectrum;
+
     //components
     private JPanel contentPane;
     private TChart spectrumChart;
     private TChart propertyChart1;
     private JButton SCMButton;
     private JButton spectrometerButton;
-    private JButton SpecButton;
+    private JButton runButton;
     private JButton StopButton;
     private JButton autoRunButton;
-    private JButton parameterButton;
     private JLabel propertyLable;
     private JTextField propertyText1;
 
@@ -126,6 +130,15 @@ public class OnlineModeGUI extends JFrame {
             }
         });
 
+        runButton=new JButton("Run");
+        runButton.setBounds(new Rectangle(200, 10, 70, 50));
+        runButton.setFont(new Font("Arial", Font.PLAIN, 14));
+        runButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                runButtonMouseClicked(e);
+            }
+        });
 
         //-------add components--------//
         contentPane.add(spectrumChart);
@@ -133,6 +146,38 @@ public class OnlineModeGUI extends JFrame {
         contentPane.add(spectrometerButton);
 
 
+    }
+
+    /**
+     * button for run
+     * @param e
+     */
+    private void runButtonMouseClicked(MouseEvent e) {
+        if(selectedSpectrometer.equalsIgnoreCase("")){
+            JOptionPane.showMessageDialog(this, "Please Connect Spectrometer in Advance","ERROR",JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        //get spectral data from spectrometer
+        switch (selectedSpectrometer){
+            case "OmniDriver":
+                omniDriver.runSpec();
+                wavelengths=omniDriver.getWaveLengths();
+                spectrum=omniDriver.getSpectrum();
+                break;
+            case "AOTF":
+                aotf.runSpec();
+                break;
+            case "NIRQuest":
+                nirQuest.runSpec();
+                break;
+            case "MPA":
+                mpa.runSpec();
+                break;
+        }
+
+        //data pre-processing
+        
     }
 
     /**
@@ -169,15 +214,19 @@ public class OnlineModeGUI extends JFrame {
         switch (spectrometerName){
             case "AOTF":
                 aotf= (AOTF) o;
+                selectedSpectrometer="AOTF";
                 break;
             case "MPA":
                 mpa= (MPA) o;
+                selectedSpectrometer="MPA";
                 break;
             case "NIRQuest":
                 nirQuest= (NIRQuest) o;
+                selectedSpectrometer="NIRQuest";
                 break;
             case "OmniDriver":
                 omniDriver= (OmniDriver) o;
+                selectedSpectrometer="OmniDriver";
                 break;
         }
     }
