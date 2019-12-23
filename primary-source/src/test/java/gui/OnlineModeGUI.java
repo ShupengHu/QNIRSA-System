@@ -36,6 +36,7 @@ public class OnlineModeGUI extends JFrame {
     private TChart propertyChart1;
     private JButton SCMButton;
     private JButton spectrometerButton;
+    private JButton preprocessButton;
     private JButton runButton;
     private JButton StopButton;
     private JButton autoRunButton;
@@ -130,8 +131,18 @@ public class OnlineModeGUI extends JFrame {
             }
         });
 
+        preprocessButton=new JButton("Pre-Process");
+        preprocessButton.setBounds(new Rectangle(210, 10, 130, 50));
+        preprocessButton.setFont(new Font("Arial", Font.PLAIN, 14));
+        preprocessButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                preprocessButtonMouseClicked(e);
+            }
+        });
+
         runButton=new JButton("Run");
-        runButton.setBounds(new Rectangle(200, 10, 70, 50));
+        runButton.setBounds(new Rectangle(340, 10, 70, 50));
         runButton.setFont(new Font("Arial", Font.PLAIN, 14));
         runButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -144,8 +155,18 @@ public class OnlineModeGUI extends JFrame {
         contentPane.add(spectrumChart);
         contentPane.add(SCMButton);
         contentPane.add(spectrometerButton);
+        contentPane.add(preprocessButton);
 
 
+    }
+
+    /**
+     * button for pre-processing
+     * @param e
+     */
+    private void preprocessButtonMouseClicked(MouseEvent e) {
+        PreProcessGUI preProcessGUI=new PreProcessGUI(onlineModeGUI);
+        preProcessGUI.setVisible(true);
     }
 
     /**
@@ -177,7 +198,7 @@ public class OnlineModeGUI extends JFrame {
         }
 
         //data pre-processing
-        
+
     }
 
     /**

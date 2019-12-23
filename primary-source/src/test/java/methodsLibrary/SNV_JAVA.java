@@ -28,6 +28,9 @@ public class SNV_JAVA implements Method{
     }
 
     @Override
+    public void setParameters() { }
+
+    @Override
     public void invokeMethod() {
         try {
             SNVMATLAB snvmatlab=new SNVMATLAB();

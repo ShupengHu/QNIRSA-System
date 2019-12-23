@@ -84,21 +84,25 @@ public class SpectrometerGUI extends JFrame {
                 omniDriver.setInput(Integer.parseInt(parameterField1.getText()),Integer.parseInt(parameterField2.getText()),Integer.parseInt(parameterField3.getText()),0);
                 omniDriver.setSpec();
                 onlineModeGUI.setSpectrometer("OmniDriver",omniDriver);
+                this.setVisible(false);
                 break;
             case "AOTF":
                 aotf.setInput();
                 aotf.setSpec();
                 onlineModeGUI.setSpectrometer("AOTF",aotf);
+                this.setVisible(false);
                 break;
             case "MPA":
                 mpa.setInput();
                 mpa.setSpec();
                 onlineModeGUI.setSpectrometer("MPA",mpa);
+                this.setVisible(false);
                 break;
             case "NIRQuest":
                 nirQuest.setInput();
                 nirQuest.setSpec();
                 onlineModeGUI.setSpectrometer("NIRQuest",nirQuest);
+                this.setVisible(false);
                 break;
         }
     }
