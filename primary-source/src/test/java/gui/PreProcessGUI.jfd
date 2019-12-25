@@ -57,31 +57,63 @@ new FormModel {
 						"height": 50
 					} )
 					add( new FormComponent( "javax.swing.JLabel" ) {
-						name: "label2"
-						"text": "text"
+						name: "wlLabel"
+						"text": "Window Length"
+						"font": new com.jformdesigner.model.SwingDerivedFont( null, 0, 3, false )
 					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-						"x": 235
-						"y": 80
-						"width": 60
+						"x": 230
+						"y": 75
+						"width": 110
 						"height": 30
 					} )
 					add( new FormComponent( "javax.swing.JLabel" ) {
-						name: "label3"
-						"text": "text"
+						name: "pfoLabel"
+						"text": "Polynomial Fit Order"
+						"font": new com.jformdesigner.model.SwingDerivedFont( null, 0, 3, false )
 					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-						"x": 230
-						"y": 125
-						"width": 55
+						"x": 200
+						"y": 120
+						"width": 170
 						"height": 25
 					} )
 					add( new FormComponent( "javax.swing.JLabel" ) {
-						name: "label4"
-						"text": "text"
+						name: "doLabel"
+						"text": "Derivative Order"
+						"font": new com.jformdesigner.model.SwingDerivedFont( null, 0, 3, false )
 					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 						"x": 230
-						"y": 175
-						"width": 45
+						"y": 165
+						"width": 130
 						"height": 30
+					} )
+					add( new FormComponent( "javax.swing.JTextField" ) {
+						name: "wlField"
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+						"x": 360
+						"y": 80
+						"width": 69
+						"height": 29
+					} )
+					add( new FormComponent( "javax.swing.JTextField" ) {
+						name: "pfoField"
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+						"width": 69
+						"height": 29
+						"x": 360
+						"y": 120
+					} )
+					add( new FormComponent( "javax.swing.JComboBox" ) {
+						name: "docomboBox"
+						"model": new javax.swing.DefaultComboBoxModel {
+							selectedItem: "0"
+							addElement( "0" )
+							addElement( "1" )
+							addElement( "2" )
+						}
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+						"x": 360
+						"y": 170
+						"width": 70
 					} )
 				}, new FormLayoutConstraints( class java.lang.String ) {
 					"value": "Center"

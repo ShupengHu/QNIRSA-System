@@ -15,6 +15,14 @@ public class Urea {
     @ColumnWidth(12)
     private double water;
 
+    public void setBiuret(double biuret){
+        this.biuret=biuret;
+    }
+
+    public void setWater(double water){
+        this.water=water;
+    }
+
     public double getBiuret(){
 
         return biuret;

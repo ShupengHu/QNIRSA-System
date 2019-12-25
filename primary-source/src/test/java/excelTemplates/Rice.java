@@ -11,6 +11,10 @@ public class Rice {
     @ColumnWidth(12)
     private double protein;
 
+    public  void  setProtein(double protein){
+        this.protein=protein;
+    }
+
     public double getProtein(){
 
         return protein;

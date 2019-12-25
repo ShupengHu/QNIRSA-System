@@ -11,6 +11,10 @@ public class Model {
     @ColumnWidth(25)
     private double coefficients;
 
+    public void setCoefficients(double coefficients){
+        this.coefficients=coefficients;
+    }
+
     public double getCoefficients(){
 
         return coefficients;

@@ -3,6 +3,10 @@ package gui;
 import com.steema.teechart.TChart;
 import com.steema.teechart.styles.Line;
 import com.steema.teechart.styles.Series;
+import dataManager.DataProcessor;
+import methodsLibrary.MSC_JAVA;
+import methodsLibrary.SG_JAVA;
+import methodsLibrary.SNV_JAVA;
 import spectrometers.AOTF;
 import spectrometers.MPA;
 import spectrometers.NIRQuest;
@@ -24,19 +28,25 @@ public class OnlineModeGUI extends JFrame {
     private MPA mpa;
     private NIRQuest nirQuest;
     private OmniDriver omniDriver;
+    private SNV_JAVA snv_java;
+    private MSC_JAVA msc_java;
+    private SG_JAVA sg_java;
 
     //parameters
     private String selectedSpectrometer="";
     private double[] wavelengths;
     private double[] spectrum;
+    private String selectedPreprocessMethod;
+    private double[][] spectraAfterPreProcess;
 
     //components
     private JPanel contentPane;
-    private TChart spectrumChart;
-    private TChart propertyChart1;
+    private TChart spectrumChart1;
+    private TChart spectrumChart2;
     private JButton SCMButton;
     private JButton spectrometerButton;
     private JButton preprocessButton;
+    private JButton modelButton;
     private JButton runButton;
     private JButton StopButton;
     private JButton autoRunButton;
@@ -89,24 +99,42 @@ public class OnlineModeGUI extends JFrame {
         contentPane.setSize(getMaximumSize());
 
         //--------set chart----------//
-        //set spectrum chart
-        spectrumChart=new TChart();
-        spectrumChart.setGraphics3D(null);
-        spectrumChart.getLegend().setVisible(false);
-        spectrumChart.setBounds(new Rectangle(0, 80, 1000, 500));
-        Series realS=new Line();
-        spectrumChart.removeAllSeries();
-        spectrumChart.addSeries(realS);
-        spectrumChart.getAspect().setView3D(false);
-        spectrumChart.getChart().getTitle().setText("Real-Time Spectrum");
-        spectrumChart.getChart().getTitle().getFont().setSize(20);
-        spectrumChart.getChart().getTitle().getFont().setColor(Color.blue);
-        spectrumChart.getAxes().getLeft().getTitle().setText("Absorbance");
-        spectrumChart.getAxes().getLeft().getTitle().getFont().setSize(20);
-        spectrumChart.getAxes().getLeft().getTitle().getFont().setColor(Color.blue);
-        spectrumChart.getAxes().getBottom().getTitle().setText("Wavelength");
-        spectrumChart.getAxes().getBottom().getTitle().getFont().setSize(20);
-        spectrumChart.getAxes().getBottom().getTitle().getFont().setColor(Color.blue);
+        //set original spectrum chart
+        spectrumChart1=new TChart();
+        spectrumChart1.setGraphics3D(null);
+        spectrumChart1.getLegend().setVisible(false);
+        spectrumChart1.setBounds(new Rectangle(0, 80, 900, 500));
+        Series realS1=new Line();
+        spectrumChart1.removeAllSeries();
+        spectrumChart1.addSeries(realS1);
+        spectrumChart1.getAspect().setView3D(false);
+        spectrumChart1.getChart().getTitle().setText("Real-Time Original Spectrum");
+        spectrumChart1.getChart().getTitle().getFont().setSize(20);
+        spectrumChart1.getChart().getTitle().getFont().setColor(Color.blue);
+        spectrumChart1.getAxes().getLeft().getTitle().setText("Absorbance");
+        spectrumChart1.getAxes().getLeft().getTitle().getFont().setSize(20);
+        spectrumChart1.getAxes().getLeft().getTitle().getFont().setColor(Color.blue);
+        spectrumChart1.getAxes().getBottom().getTitle().setText("Wavelength");
+        spectrumChart1.getAxes().getBottom().getTitle().getFont().setSize(20);
+        spectrumChart1.getAxes().getBottom().getTitle().getFont().setColor(Color.blue);
+        //set pre-processed spectrum
+        spectrumChart2=new TChart();
+        spectrumChart2.setGraphics3D(null);
+        spectrumChart2.getLegend().setVisible(false);
+        spectrumChart2.setBounds(new Rectangle(950, 80, 900, 500));
+        Series realS2=new Line();
+        spectrumChart2.removeAllSeries();
+        spectrumChart2.addSeries(realS2);
+        spectrumChart2.getAspect().setView3D(false);
+        spectrumChart2.getChart().getTitle().setText("Real-Time Pre-processed Spectrum");
+        spectrumChart2.getChart().getTitle().getFont().setSize(20);
+        spectrumChart2.getChart().getTitle().getFont().setColor(Color.blue);
+        spectrumChart2.getAxes().getLeft().getTitle().setText("Absorbance");
+        spectrumChart2.getAxes().getLeft().getTitle().getFont().setSize(20);
+        spectrumChart2.getAxes().getLeft().getTitle().getFont().setColor(Color.blue);
+        spectrumChart2.getAxes().getBottom().getTitle().setText("Wavelength");
+        spectrumChart2.getAxes().getBottom().getTitle().getFont().setSize(20);
+        spectrumChart2.getAxes().getBottom().getTitle().getFont().setColor(Color.blue);
 
         //set result chart
 
@@ -141,8 +169,18 @@ public class OnlineModeGUI extends JFrame {
             }
         });
 
+        modelButton=new JButton("Model");
+        modelButton.setBounds(new Rectangle(350, 10, 80, 50));
+        modelButton.setFont(new Font("Arial", Font.PLAIN, 14));
+        modelButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                pmodelButtonMouseClicked(e);
+            }
+        });
+
         runButton=new JButton("Run");
-        runButton.setBounds(new Rectangle(340, 10, 70, 50));
+        runButton.setBounds(new Rectangle(440, 10, 70, 50));
         runButton.setFont(new Font("Arial", Font.PLAIN, 14));
         runButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -152,12 +190,22 @@ public class OnlineModeGUI extends JFrame {
         });
 
         //-------add components--------//
-        contentPane.add(spectrumChart);
+        contentPane.add(spectrumChart1);
+        contentPane.add(spectrumChart2);
         contentPane.add(SCMButton);
         contentPane.add(spectrometerButton);
         contentPane.add(preprocessButton);
+        contentPane.add(modelButton);
+        contentPane.add(runButton);
 
 
+    }
+
+    /**
+     * button for model
+     * @param e
+     */
+    private void pmodelButtonMouseClicked(MouseEvent e) {
     }
 
     /**
@@ -176,6 +224,10 @@ public class OnlineModeGUI extends JFrame {
     private void runButtonMouseClicked(MouseEvent e) {
         if(selectedSpectrometer.equalsIgnoreCase("")){
             JOptionPane.showMessageDialog(this, "Please Connect Spectrometer in Advance","ERROR",JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if(selectedPreprocessMethod.equalsIgnoreCase("")){
+            JOptionPane.showMessageDialog(this, "Please Select Pre-process M    ethod in Advance","ERROR",JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -197,7 +249,18 @@ public class OnlineModeGUI extends JFrame {
                 break;
         }
 
-        //data pre-processing
+        //draw real-time original spectrum
+        spectrumChart1.getSeries(0).add(wavelengths,spectrum);
+        spectrumChart1.repaint();
+
+        //pre-processing spectral data
+        preProcess(DataProcessor.oneDToTwoDArray(spectrum));
+
+        //draw real-time pre-processed spectrum
+        spectrumChart2.getSeries(0).add(wavelengths,spectraAfterPreProcess[0]);
+        spectrumChart2.repaint();
+
+        //
 
     }
 
@@ -230,6 +293,7 @@ public class OnlineModeGUI extends JFrame {
     /**
      * set spectrometer class object
      * @param spectrometerName
+     * @param o class object
      */
     public void setSpectrometer(String spectrometerName,Object o){
         switch (spectrometerName){
@@ -251,6 +315,53 @@ public class OnlineModeGUI extends JFrame {
                 break;
         }
     }
+
+    /**
+     *  set preprocess method
+     * @param methodName
+     * @param o class object
+     */
+    public void setPreProcessMethod(String methodName, Object o){
+        selectedPreprocessMethod=methodName;
+        switch (selectedPreprocessMethod){
+            case "SNV":
+                snv_java=(SNV_JAVA)o;
+                break;
+            case "MSC":
+                msc_java=(MSC_JAVA)o;
+                break;
+            case "SG":
+                sg_java=(SG_JAVA)o;
+                break;
+        }
+    }
+    /**
+     * invoke preprocess methods
+     * @param data
+     */
+    public void preProcess(double[][] data){
+        switch (selectedPreprocessMethod){
+            case "SNV":
+                snv_java.invokeMethod(data);
+                snv_java.parseResult();
+                spectraAfterPreProcess=snv_java.getResult();
+                break;
+            case "MSC":
+                msc_java.invokeMethod(data);
+                msc_java.parseResult();
+                spectraAfterPreProcess=msc_java.getResult();
+                break;
+            case "SG":
+                sg_java.setWavelength(DataProcessor.oneDToTwoDArray(wavelengths));
+                sg_java.invokeMethod(data);
+                sg_java.parseResult();
+                spectraAfterPreProcess=sg_java.getResult();
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + selectedPreprocessMethod);
+        }
+    }
+
 
     public static void main(String[] args) throws IOException {
         OnlineModeGUI o=new OnlineModeGUI();

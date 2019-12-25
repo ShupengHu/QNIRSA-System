@@ -11,6 +11,10 @@ public class Wavelength {
     @ColumnWidth(15)
     private  double wavelength;
 
+    public void setWavelength(double wavelength){
+        this.wavelength=wavelength;
+    }
+
     public double getWavelength(){
 
         return  wavelength;
