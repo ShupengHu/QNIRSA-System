@@ -1,16 +1,28 @@
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.write.metadata.WriteSheet;
 import dataManager.ExcelManager;
 
 import dataManager.DataProcessor;
+import excelTemplates.Model;
+import excelTemplates.Urea;
 import excelTemplates.Wavelength;
 import methodsLibrary.SG_JAVA;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Test {
+    private static String filePath="G:\\Professional Software\\IntelliJ IDEA\\My Projects\\QNIRSA System\\primary-source\\src\\test\\resources\\ExcelDocuments\\";
+
     public static void main(String[] args) throws Exception {
 
-        String filePath="G:\\Professional Software\\IntelliJ IDEA\\My Projects\\QNIRSA System\\primary-source\\src\\test\\resources\\ExcelDocuments\\";
+        testExcel();
+    }
+
+    public  static void testMethod() throws Exception {
+
         ExcelManager em=new ExcelManager();
         List<double[]> list1=new ArrayList<double[]>();
         List<Object> list2=new ArrayList<Object>();
@@ -31,10 +43,30 @@ public class Test {
         sg_java.invokeMethod(data);
         sg_java.parseResult();
         double[][] result=sg_java.getResult();
-        System.out.println(result[0][3]);
-        list3= DataProcessor.doubleArrayToList1(result);
-        System.out.println(list3.get(0)[0]);
-        em.writeExcel(filePath+"afterPreProcess.xlsx",list3);
+        em.writeExcel(filePath+"afterPreProcess.xlsx",result);
+    }
+
+    public static void testExcel() throws Exception {
+        List<Object> list=new ArrayList<>();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateTime=df.format(new Date());
+        dateTime=dateTime.replaceAll(":", "-");
+        for(double i=1;i<4;i++){
+            Urea urea =new Urea();
+            urea.setWater(i);
+            urea.setBiuret(i+1.1);
+            list.add(urea);
+        }
+        WriteSheet writeSheet = EasyExcel.writerSheet("sheet1").build();
+        ExcelManager excelManager=new ExcelManager();
+        excelManager.repeatWriteExcel(filePath+dateTime+" Urea.xlsx",list,Urea.class,writeSheet);
+        for(double i=1;i<5;i++){
+            Urea urea =new Urea();
+            urea.setWater(i);
+            urea.setBiuret(i+1.1);
+            list.add(urea);
+        }
+        excelManager.repeatWriteExcel(filePath+dateTime+" Urea.xlsx",list,Urea.class,writeSheet);
 
     }
 }

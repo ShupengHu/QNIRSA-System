@@ -53,7 +53,7 @@ public class PreProcessGUI extends JFrame {
                 ExcelManager excelManager=new ExcelManager();
                 excelManager.readExcel(filePath);
                 refSpectrum=excelManager.getListD();
-                msc_java.setParameters(DataProcessor.listToDoubleArray1(refSpectrum));
+                msc_java.setRefSpectrum(DataProcessor.listToDoubleArray1(refSpectrum));
                 onlineModeGUI.setPreProcessMethod("MSC",msc_java);
                 break;
             case "SG":

@@ -1,6 +1,8 @@
 package dataManager;
 
 import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.ExcelWriter;
+import com.alibaba.excel.write.metadata.WriteSheet;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -11,8 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ExcelManager {
-    private List<Object> listO=new ArrayList<Object>();
-    private List<double[]> listD=new ArrayList<double[]>();
+    private static List<Object> listO=new ArrayList<Object>();
+    private static List<double[]> listD=new ArrayList<double[]>();
 
     /**
      * Import data from excel with template
@@ -20,7 +22,7 @@ public class ExcelManager {
      * @param c template class
      * @throws Exception
      */
-    public void readExcel(String fileName, Class c) throws Exception{
+    public static void readExcel(String fileName, Class c) throws Exception{
         ExcelListener el=new ExcelListener();
         EasyExcel.read(fileName, c, el).sheet().doRead();
         listO = el.getList();
@@ -31,7 +33,7 @@ public class ExcelManager {
      * @param fileName
      * @throws Exception
      */
-    public void readExcel(String fileName) throws Exception{
+    public static void readExcel(String fileName) throws Exception{
         InputStream is=new FileInputStream(fileName);
         XSSFWorkbook excel=new XSSFWorkbook(is);
         XSSFSheet sheet=excel.getSheetAt(0);
@@ -59,17 +61,17 @@ public class ExcelManager {
      * @param c template class
      * @throws Exception
      */
-    public void writeExcel (String fileName, List<Object> list,Class c) throws Exception{
+    public static void writeExcel (String fileName, List<Object> list,Class c) throws Exception{
         EasyExcel.write(fileName, c).sheet().doWrite(list);
     }
 
     /**
      * Export data to Excel without template
      * @param fileName
-     * @param list data
+     * @param data
      * @throws Exception
      */
-    public void writeExcel (String fileName, List<double[]> list) throws Exception{
+    public static void writeExcel (String fileName, double[][] data) throws Exception{
         File file= new File(fileName);
         if (file.exists()==false){
             file.createNewFile();
@@ -79,11 +81,11 @@ public class ExcelManager {
         /**
          * Loop for exporting data to Excel
          */
-        for(int i=0;i<list.size();i++){
+        for(int i=0;i<data.length;i++){
             XSSFRow row=sheet.createRow(i);
-            for(int j=0;j<list.get(i).length;j++){
+            for(int j=0;j<data[0].length;j++){
                 XSSFCell cell=row.createCell(j);
-                cell.setCellValue(list.get(i)[j]);
+                cell.setCellValue(data[i][j]);
             }
         }
 
@@ -92,12 +94,25 @@ public class ExcelManager {
         os.close();
     }
 
-    public List<Object> getListO(){
+    /**
+     * Export data to Excel without template and won't cover previous data in the Excel document
+     * @param fileName
+     * @param list
+     * @param c
+     */
+    public static void repeatWriteExcel(String fileName,List<Object> list, Class c, WriteSheet writeSheet){
+        ExcelWriter excelWriter = EasyExcel.write(fileName, c).build();
+        // 这里注意 如果同一个sheet只要创建一次
+        excelWriter.write(list, writeSheet);
+        excelWriter.finish();
+    }
+
+    public static List<Object> getListO(){
 
         return listO;
     }
 
-    public List<double[]> getListD(){
+    public static List<double[]> getListD(){
 
         return listD;
     }

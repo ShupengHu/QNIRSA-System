@@ -1,5 +1,8 @@
 package dataManager;
 
+import com.mathworks.toolbox.javabuilder.MWClassID;
+import com.mathworks.toolbox.javabuilder.MWComplexity;
+import com.mathworks.toolbox.javabuilder.MWNumericArray;
 import excelTemplates.Model;
 import excelTemplates.Rice;
 import excelTemplates.Urea;
@@ -171,4 +174,24 @@ public class DataProcessor {
         return d;
     }
 
+    /**
+     * convert a double array into a matrix
+     * @param data
+     * @return
+     */
+    public static MWNumericArray doubleArrayToMatrix(double[][] data){
+        MWNumericArray matrix;
+        //set size of matrix
+        int[] n={data.length,data[0].length};
+        matrix=MWNumericArray.newInstance(n, MWClassID.DOUBLE, MWComplexity.REAL);
+        /* Set matrix values */
+        int[] index = {1, 1};
+        for (index[0]= 1; index[0] <= n[0]; index[0]++) {
+            for (index[1] = 1; index[1] <= n[1]; index[1]++) {
+                //index of the first element in MATLAB is（1,1), but index of two-dimensional double array in Java is [0,0]
+                matrix.set(index,data[index[0]-1][index[1]-1]);
+            }
+        }
+        return matrix;
+    }
 }

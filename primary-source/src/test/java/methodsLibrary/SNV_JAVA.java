@@ -6,6 +6,7 @@ import com.mathworks.toolbox.javabuilder.MWClassID;
 import com.mathworks.toolbox.javabuilder.MWComplexity;
 import com.mathworks.toolbox.javabuilder.MWException;
 import com.mathworks.toolbox.javabuilder.MWNumericArray;
+import dataManager.DataProcessor;
 
 public class SNV_JAVA implements Method{
     private Object[] result;
@@ -15,18 +16,7 @@ public class SNV_JAVA implements Method{
 
     @Override
     public void invokeMethod(double[][] data) {
-        /*------convert a double array into a matrix*/
-        //set size of matrix
-        int[] n={data.length,data[0].length};
-        matrix=MWNumericArray.newInstance(n, MWClassID.DOUBLE, MWComplexity.REAL);
-        /* Set matrix values */
-        int[] index = {1, 1};
-        for (index[0]= 1; index[0] <= n[0]; index[0]++) {
-            for (index[1] = 1; index[1] <= n[1]; index[1]++) {
-                //index of the first element in MATLAB is（1,1), but index of two-dimensional double array in Java is [0,0]
-                matrix.set(index,data[index[0]-1][index[1]-1]);
-            }
-        }
+        matrix= DataProcessor.doubleArrayToMatrix(data);
 
         //invoke MATLAB method
         try {

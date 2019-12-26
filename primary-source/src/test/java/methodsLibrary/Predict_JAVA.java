@@ -1,46 +1,42 @@
 package methodsLibrary;
 
-import MSC_MATLAB.MSCMATLAB;
-import SNV_MATLAB.SNVMATLAB;
-import com.mathworks.toolbox.javabuilder.MWClassID;
-import com.mathworks.toolbox.javabuilder.MWComplexity;
+import Predict_MATLAB.PredictMATLAB;
 import com.mathworks.toolbox.javabuilder.MWException;
 import com.mathworks.toolbox.javabuilder.MWNumericArray;
 import dataManager.DataProcessor;
 
-public class MSC_JAVA implements Method{
+public class Predict_JAVA implements Method{
     private Object[] result;
     private MWNumericArray matrix;
-    private MWNumericArray RefSpectrum;
-    private double[][] spectrabyMSC;
+    private MWNumericArray B;
+    private double[][] predictions;
 
-
-    public void setRefSpectrum(double[][] refSpectrum) {
-       RefSpectrum= DataProcessor.doubleArrayToMatrix(refSpectrum);
+    public void setB(double[][] model){
+        B= DataProcessor.doubleArrayToMatrix(model);
     }
 
     @Override
     public void invokeMethod(double[][] data) {
         matrix=DataProcessor.doubleArrayToMatrix(data);
-
         //invoke MATLAB method
         try {
-            MSCMATLAB mscmatlab=new MSCMATLAB();
+            PredictMATLAB predictMATLAB=new PredictMATLAB();
             //the first integer parameter means how many objects will return in result
-            result=mscmatlab.MSC(1, matrix,RefSpectrum);
+            result=predictMATLAB.Predict(1,B,matrix);
         } catch (MWException e) {
             e.printStackTrace();
         }
+
 
     }
 
     @Override
     public void parseResult() {
-        spectrabyMSC=(double[][]) ((MWNumericArray)result[0]).toDoubleArray();
+        predictions=(double[][]) ((MWNumericArray)result[0]).toDoubleArray();
     }
 
     @Override
     public double[][] getResult() {
-        return spectrabyMSC;
+        return predictions;
     }
 }

@@ -1,10 +1,16 @@
 package gui;
 
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.write.metadata.WriteSheet;
 import com.steema.teechart.TChart;
 import com.steema.teechart.styles.Line;
 import com.steema.teechart.styles.Series;
 import dataManager.DataProcessor;
+import dataManager.ExcelManager;
+import excelTemplates.Rice;
+import excelTemplates.Urea;
 import methodsLibrary.MSC_JAVA;
+import methodsLibrary.Predict_JAVA;
 import methodsLibrary.SG_JAVA;
 import methodsLibrary.SNV_JAVA;
 import spectrometers.AOTF;
@@ -19,7 +25,10 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.List;
+import java.util.Timer;
 
 public class OnlineModeGUI extends JFrame {
     //class objects
@@ -31,6 +40,7 @@ public class OnlineModeGUI extends JFrame {
     private SNV_JAVA snv_java;
     private MSC_JAVA msc_java;
     private SG_JAVA sg_java;
+    private Predict_JAVA predict_java;
 
     //parameters
     private String selectedSpectrometer="";
@@ -38,47 +48,39 @@ public class OnlineModeGUI extends JFrame {
     private double[] spectrum;
     private String selectedPreprocessMethod;
     private double[][] spectraAfterPreProcess;
+    private double[][] model;
+    private double[][] predictions;
+    private int Noofproperty=1;
+    private String sampleCategory;
+    private ArrayList<Double> list1=new ArrayList<Double>();
+    private ArrayList<Double> list2=new ArrayList<Double>();
+    private ArrayList<Double> list3=new ArrayList<Double>();
+    private ArrayList<Double> list4=new ArrayList<Double>();
+    private ArrayList<Double> list5=new ArrayList<Double>();
+    private ArrayList<Double> list6=new ArrayList<Double>();
+    private SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	private String dateTime=df.format(new Date());
+	private WriteSheet writeSheet = EasyExcel.writerSheet("sheet1").build();
+    boolean isStopped=false;
 
     //components
     private JPanel contentPane;
     private TChart spectrumChart1;
     private TChart spectrumChart2;
+    private TChart propertyChart1;
+    private TChart propertyChart2;
+    private TChart propertyChart3;
+    private TChart propertyChart4;
+    private TChart propertyChart5;
+    private TChart propertyChart6;
+
     private JButton SCMButton;
     private JButton spectrometerButton;
     private JButton preprocessButton;
     private JButton modelButton;
     private JButton runButton;
-    private JButton StopButton;
+    private JButton stopButton;
     private JButton autoRunButton;
-    private JLabel propertyLable;
-    private JTextField propertyText1;
-
-    //曲线集
-    private Series[] series=null;
-    //用户输入参数
-    //其他参数
-    Connection con=null;
-    String dateTime="";                                     //扫描实时时间
-    int sampleNo=0;                                         //样品序号
-    double[] B_LightIntensities=null;                       //背景光谱的光强
-    double[] R_LightIntensities=null;                       //参考光谱的光强
-    double[] S_LightIntensities=null;                       //样品光谱的光强
-    double[] Wavelengths=null;                              //波长
-    double[] reflectivity=null;                             //反射率
-    double[] absorbance=null;                               //吸光度
-    double[][] model_absorbance=null;                       //模型吸光度
-    double[][] model_chemicalValue=null;                    //模型化学值
-    double[] selectedAbsorbance=null;                       //被手动选择用于数据分析的光谱
-    double[][] afterPreprocess=null;                        //经过预处理后的数据
-    double[][] concentration=null;                          //经过多元校正处理后得到的浓度矩阵
-    ArrayList<Double> biruetList=new ArrayList<>();         //经过多元校正处理后得到的缩二脲浓度
-    ArrayList<Double> waterList=new ArrayList<>();          //经过多元校正处理后得到的水分浓度
-    ArrayList<Double> carbamideList=new ArrayList<>();      //经过多元校正处理后得到的尿素浓度
-    ArrayList<Double> X=new ArrayList<>();                  //浓度图通用横坐标
-    boolean isRunned=false;                                 //判断光谱仪是否已经开始工作
-    boolean isStoped=false;                                 //判断光谱仪是否已经停止工作
-    boolean isAutoRun=false;                                //是否为自动运行状态
-    File[] openFiles=null;                                  //选择打开的文件集
 
 
     public OnlineModeGUI() throws IOException {
@@ -135,9 +137,108 @@ public class OnlineModeGUI extends JFrame {
         spectrumChart2.getAxes().getBottom().getTitle().setText("Wavelength");
         spectrumChart2.getAxes().getBottom().getTitle().getFont().setSize(20);
         spectrumChart2.getAxes().getBottom().getTitle().getFont().setColor(Color.blue);
+        //set predictions chart
+        propertyChart1=new TChart();
+        propertyChart1.setGraphics3D(null);
+        propertyChart1.getLegend().setVisible(false);
+        propertyChart1.setBounds(new Rectangle(0, 590, 600, 170));
+        Series propertySerie1=new Line();
+        propertyChart1.removeAllSeries();
+        propertyChart1.addSeries(propertySerie1);
+        propertyChart1.getAspect().setView3D(false);
+        propertyChart1.getChart().getTitle().setText("Real-Time Sample Property");
+        propertyChart1.getChart().getTitle().getFont().setSize(20);
+        propertyChart1.getChart().getTitle().getFont().setColor(Color.blue);
+        propertyChart1.getAxes().getLeft().getTitle().getFont().setSize(20);
+        propertyChart1.getAxes().getLeft().getTitle().getFont().setColor(Color.blue);
+        propertyChart1.getAxes().getBottom().getTitle().setText("Number of Samples");
+        propertyChart1.getAxes().getBottom().getTitle().getFont().setSize(20);
+        propertyChart1.getAxes().getBottom().getTitle().getFont().setColor(Color.blue);
 
-        //set result chart
+        propertyChart2=new TChart();
+        propertyChart2.setGraphics3D(null);
+        propertyChart2.getLegend().setVisible(false);
+        propertyChart2.setBounds(new Rectangle(0, 770, 600, 170));
+        Series propertySerie2=new Line();
+        propertyChart2.removeAllSeries();
+        propertyChart2.addSeries(propertySerie2);
+        propertyChart2.getAspect().setView3D(false);
+        propertyChart2.getChart().getTitle().setText("Real-Time Sample Property");
+        propertyChart2.getChart().getTitle().getFont().setSize(20);
+        propertyChart2.getChart().getTitle().getFont().setColor(Color.blue);
+        propertyChart2.getAxes().getLeft().getTitle().getFont().setSize(20);
+        propertyChart2.getAxes().getLeft().getTitle().getFont().setColor(Color.blue);
+        propertyChart2.getAxes().getBottom().getTitle().setText("Number of Samples");
+        propertyChart2.getAxes().getBottom().getTitle().getFont().setSize(20);
+        propertyChart2.getAxes().getBottom().getTitle().getFont().setColor(Color.blue);
 
+        propertyChart3=new TChart();
+        propertyChart3.setGraphics3D(null);
+        propertyChart3.getLegend().setVisible(false);
+        propertyChart3.setBounds(new Rectangle(620, 590, 600, 170));
+        Series propertySerie3=new Line();
+        propertyChart3.removeAllSeries();
+        propertyChart3.addSeries(propertySerie3);
+        propertyChart3.getAspect().setView3D(false);
+        propertyChart3.getChart().getTitle().setText("Real-Time Sample Property");
+        propertyChart3.getChart().getTitle().getFont().setSize(20);
+        propertyChart3.getChart().getTitle().getFont().setColor(Color.blue);
+        propertyChart3.getAxes().getLeft().getTitle().getFont().setSize(20);
+        propertyChart3.getAxes().getLeft().getTitle().getFont().setColor(Color.blue);
+        propertyChart3.getAxes().getBottom().getTitle().setText("Number of Samples");
+        propertyChart3.getAxes().getBottom().getTitle().getFont().setSize(20);
+        propertyChart3.getAxes().getBottom().getTitle().getFont().setColor(Color.blue);
+
+        propertyChart4=new TChart();
+        propertyChart4.setGraphics3D(null);
+        propertyChart4.getLegend().setVisible(false);
+        propertyChart4.setBounds(new Rectangle(620, 770, 600, 170));
+        Series propertySerie4=new Line();
+        propertyChart4.removeAllSeries();
+        propertyChart4.addSeries(propertySerie4);
+        propertyChart4.getAspect().setView3D(false);
+        propertyChart4.getChart().getTitle().setText("Real-Time Sample Property");
+        propertyChart4.getChart().getTitle().getFont().setSize(20);
+        propertyChart4.getChart().getTitle().getFont().setColor(Color.blue);
+        propertyChart4.getAxes().getLeft().getTitle().getFont().setSize(20);
+        propertyChart4.getAxes().getLeft().getTitle().getFont().setColor(Color.blue);
+        propertyChart4.getAxes().getBottom().getTitle().setText("Number of Samples");
+        propertyChart4.getAxes().getBottom().getTitle().getFont().setSize(20);
+        propertyChart4.getAxes().getBottom().getTitle().getFont().setColor(Color.blue);
+
+        propertyChart5=new TChart();
+        propertyChart5.setGraphics3D(null);
+        propertyChart5.getLegend().setVisible(false);
+        propertyChart5.setBounds(new Rectangle(1240, 590, 600, 170));
+        Series propertySerie5=new Line();
+        propertyChart5.removeAllSeries();
+        propertyChart5.addSeries(propertySerie5);
+        propertyChart5.getAspect().setView3D(false);
+        propertyChart5.getChart().getTitle().setText("Real-Time Sample Property");
+        propertyChart5.getChart().getTitle().getFont().setSize(20);
+        propertyChart5.getChart().getTitle().getFont().setColor(Color.blue);
+        propertyChart5.getAxes().getLeft().getTitle().getFont().setSize(20);
+        propertyChart5.getAxes().getLeft().getTitle().getFont().setColor(Color.blue);
+        propertyChart5.getAxes().getBottom().getTitle().setText("Number of Samples");
+        propertyChart5.getAxes().getBottom().getTitle().getFont().setSize(20);
+        propertyChart5.getAxes().getBottom().getTitle().getFont().setColor(Color.blue);
+
+        propertyChart6=new TChart();
+        propertyChart6.setGraphics3D(null);
+        propertyChart6.getLegend().setVisible(false);
+        propertyChart6.setBounds(new Rectangle(1240, 770, 600, 170));
+        Series propertySerie6=new Line();
+        propertyChart6.removeAllSeries();
+        propertyChart6.addSeries(propertySerie6);
+        propertyChart6.getAspect().setView3D(false);
+        propertyChart6.getChart().getTitle().setText("Real-Time Sample Property");
+        propertyChart6.getChart().getTitle().getFont().setSize(20);
+        propertyChart6.getChart().getTitle().getFont().setColor(Color.blue);
+        propertyChart6.getAxes().getLeft().getTitle().getFont().setSize(20);
+        propertyChart6.getAxes().getLeft().getTitle().getFont().setColor(Color.blue);
+        propertyChart6.getAxes().getBottom().getTitle().setText("Number of Samples");
+        propertyChart6.getAxes().getBottom().getTitle().getFont().setSize(20);
+        propertyChart6.getAxes().getBottom().getTitle().getFont().setColor(Color.blue);
         //-------set buttons------------//
         SCMButton=new JButton("SCM");
         SCMButton.setBounds(new Rectangle(0, 10, 70, 50));
@@ -175,7 +276,7 @@ public class OnlineModeGUI extends JFrame {
         modelButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                pmodelButtonMouseClicked(e);
+                modelButtonMouseClicked(e);
             }
         });
 
@@ -189,6 +290,26 @@ public class OnlineModeGUI extends JFrame {
             }
         });
 
+        autoRunButton=new JButton("Auto-Run");
+        autoRunButton.setBounds(new Rectangle(520, 10, 100, 50));
+        autoRunButton.setFont(new Font("Arial", Font.PLAIN, 14));
+        autoRunButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                autoRunButtonMouseClicked(e);
+            }
+        });
+
+        stopButton=new JButton("Stop");
+        stopButton.setBounds(new Rectangle(630, 10, 70, 50));
+        stopButton.setFont(new Font("Arial", Font.PLAIN, 14));
+        stopButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                stopButtonMouseClicked(e);
+            }
+        });
+
         //-------add components--------//
         contentPane.add(spectrumChart1);
         contentPane.add(spectrumChart2);
@@ -197,15 +318,47 @@ public class OnlineModeGUI extends JFrame {
         contentPane.add(preprocessButton);
         contentPane.add(modelButton);
         contentPane.add(runButton);
+        contentPane.add(autoRunButton);
+        contentPane.add(stopButton);
 
 
+    }
+
+    /**
+     * button for stop
+     * @param e
+     */
+    private void stopButtonMouseClicked(MouseEvent e) {
+        isStopped=true;
+    }
+
+    /**
+     * button for auto run
+     * @param e
+     */
+    private void autoRunButtonMouseClicked(final MouseEvent e) {
+        final Timer timer=new Timer();
+        TimerTask tt=new TimerTask() {
+            @Override
+            public void run() {
+                runButtonMouseClicked(e);
+                //
+                if(isStopped==true){
+                    timer.cancel();
+                    isStopped=false;
+                }
+            }
+        };
+       timer.schedule(tt, 0, 30*1000);
     }
 
     /**
      * button for model
      * @param e
      */
-    private void pmodelButtonMouseClicked(MouseEvent e) {
+    private void modelButtonMouseClicked(MouseEvent e) {
+        ModelGUI modelGUI=new ModelGUI(onlineModeGUI);
+        modelGUI.setVisible(true);
     }
 
     /**
@@ -227,11 +380,148 @@ public class OnlineModeGUI extends JFrame {
             return;
         }
         if(selectedPreprocessMethod.equalsIgnoreCase("")){
-            JOptionPane.showMessageDialog(this, "Please Select Pre-process M    ethod in Advance","ERROR",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Please Select Pre-process Method in Advance","ERROR",JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if(model==null){
+            JOptionPane.showMessageDialog(this, "Please Import Model in Advance","ERROR",JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         //get spectral data from spectrometer
+        getData();
+
+        //draw real-time original spectrum
+        spectrumChart1.getSeries(0).add(wavelengths,spectrum);
+        spectrumChart1.repaint();
+
+        //pre-processing spectral data
+        preProcess(DataProcessor.oneDToTwoDArray(spectrum));
+
+        //draw real-time pre-processed spectrum
+        spectrumChart2.getSeries(0).add(wavelengths,spectraAfterPreProcess[0]);
+        spectrumChart2.repaint();
+
+        //Predict sample propertied based on model
+        predict_java.invokeMethod(spectraAfterPreProcess);
+        predict_java.parseResult();
+        predictions=predict_java.getResult();
+
+        //draw real-time predictions on chart
+        drawPredictions();
+
+        //store predictions into Excel document
+        dateTime=dateTime.replaceAll(":", "-");
+        switch (sampleCategory){
+            case "Rice":
+                ExcelManager.repeatWriteExcel("D:\\"+dateTime+" predictions.xlsx",DataProcessor.doubleArrayToList2(predictions,"Rice"), Rice.class,writeSheet);
+                break;
+            case "Urea":
+                ExcelManager.repeatWriteExcel("D:\\"+dateTime+" predictions.xlsx",DataProcessor.doubleArrayToList2(predictions,"Urea"), Urea.class,writeSheet);
+                break;
+        }
+    }
+
+    /**
+     * draw predictions on chart
+     */
+    public void drawPredictions(){
+        switch (Noofproperty){
+            case 1:
+                list1.add(predictions[0][0]);
+                propertyChart1.getSeries(0).add(getX_axis(list1.size()),list1);
+                propertyChart1.repaint();
+                break;
+            case 2:
+                list1.add(predictions[0][0]);
+                propertyChart1.getSeries(0).add(getX_axis(list1.size()), list1);
+                propertyChart1.repaint();
+                list2.add(predictions[0][1]);
+                propertyChart2.getSeries(0).add(getX_axis(list2.size()), list2);
+                propertyChart2.repaint();
+                break;
+            case 3:
+                list1.add(predictions[0][0]);
+                propertyChart1.getSeries(0).add(getX_axis(list1.size()), list1);
+                propertyChart1.repaint();
+                list2.add(predictions[0][1]);
+                propertyChart2.getSeries(0).add(getX_axis(list2.size()), list2);
+                propertyChart2.repaint();
+                list3.add(predictions[0][2]);
+                propertyChart3.getSeries(0).add(getX_axis(list3.size()), list3);
+                propertyChart3.repaint();
+                break;
+            case 4:
+                list1.add(predictions[0][0]);
+                propertyChart1.getSeries(0).add(getX_axis(list1.size()),list1);
+                propertyChart1.repaint();
+                list2.add(predictions[0][1]);
+                propertyChart2.getSeries(0).add(getX_axis(list2.size()),  list2);
+                propertyChart2.repaint();
+                list3.add(predictions[0][2]);
+                propertyChart3.getSeries(0).add(getX_axis(list3.size()), list3);
+                propertyChart3.repaint();
+                list4.add(predictions[0][3]);
+                propertyChart4.getSeries(0).add(getX_axis(list4.size()), list4);
+                propertyChart4.repaint();
+                break;
+            case 5:
+                list1.add(predictions[0][0]);
+                propertyChart1.getSeries(0).add(getX_axis(list1.size()), list1);
+                propertyChart1.repaint();
+                list2.add(predictions[0][1]);
+                propertyChart2.getSeries(0).add(getX_axis(list2.size()), list2);
+                propertyChart2.repaint();
+                list3.add(predictions[0][2]);
+                propertyChart3.getSeries(0).add(getX_axis(list3.size()), list3);
+                propertyChart3.repaint();
+                list4.add(predictions[0][3]);
+                propertyChart4.getSeries(0).add(getX_axis(list4.size()), list4);
+                propertyChart4.repaint();
+                list5.add(predictions[0][4]);
+                propertyChart5.getSeries(0).add(getX_axis(list5.size()), list5);
+                propertyChart5.repaint();
+                break;
+            case 6:
+                list1.add(predictions[0][0]);
+                propertyChart1.getSeries(0).add(getX_axis(list1.size()), list1);
+                propertyChart1.repaint();
+                list2.add(predictions[0][1]);
+                propertyChart2.getSeries(0).add(getX_axis(list2.size()),  list2);
+                propertyChart2.repaint();
+                list3.add(predictions[0][2]);
+                propertyChart3.getSeries(0).add(getX_axis(list3.size()), list3);
+                propertyChart3.repaint();
+                list4.add(predictions[0][3]);
+                propertyChart4.getSeries(0).add(getX_axis(list4.size()),  list4);
+                propertyChart4.repaint();
+                list5.add(predictions[0][4]);
+                propertyChart5.getSeries(0).add(getX_axis(list5.size()),  list5);
+                propertyChart5.repaint();
+                list6.add(predictions[0][5]);
+                propertyChart6.getSeries(0).add(getX_axis(list6.size()),  list6);
+                propertyChart6.repaint();
+                break;
+        }
+    }
+
+    /**
+     * get the X axis for predictions chart
+     * @param X_length length of X axis
+     * @return
+     */
+    public ArrayList<Double> getX_axis(int X_length){
+        ArrayList<Double> X_axis=new ArrayList<>();
+        for(double i=0;i<(double)X_length;i++){
+            X_axis.add(i+1);
+        }
+        return X_axis;
+    }
+
+    /**
+     * get spectral data from spectrometer
+     */
+    public void getData(){
         switch (selectedSpectrometer){
             case "OmniDriver":
                 omniDriver.runSpec();
@@ -248,20 +538,6 @@ public class OnlineModeGUI extends JFrame {
                 mpa.runSpec();
                 break;
         }
-
-        //draw real-time original spectrum
-        spectrumChart1.getSeries(0).add(wavelengths,spectrum);
-        spectrumChart1.repaint();
-
-        //pre-processing spectral data
-        preProcess(DataProcessor.oneDToTwoDArray(spectrum));
-
-        //draw real-time pre-processed spectrum
-        spectrumChart2.getSeries(0).add(wavelengths,spectraAfterPreProcess[0]);
-        spectrumChart2.repaint();
-
-        //
-
     }
 
     /**
@@ -362,9 +638,60 @@ public class OnlineModeGUI extends JFrame {
         }
     }
 
-
-    public static void main(String[] args) throws IOException {
-        OnlineModeGUI o=new OnlineModeGUI();
-        o.setVisible(true);
+    /**
+     * set model
+     * @param model
+     */
+    public void setModel(double[][] model){
+        this.model=model;
+        predict_java=new Predict_JAVA();
+        predict_java.setB(this.model);
     }
+
+    /**
+     * set sample category
+     */
+    public void setSampleCategory(String sampleCategory){
+        this.sampleCategory=sampleCategory;
+    }
+    /**
+     * set chart for displaying predicitons of properties
+     * @param propertyName
+     */
+    public void setProperty(String propertyName){
+        switch (Noofproperty){
+            case 1:
+                propertyChart1.getAxes().getLeft().getTitle().setText(propertyName);
+                contentPane.add(propertyChart1);
+                repaint();
+                break;
+            case 2:
+                propertyChart2.getAxes().getLeft().getTitle().setText(propertyName);
+                contentPane.add(propertyChart2);
+                repaint();
+                break;
+            case 3:
+                propertyChart3.getAxes().getLeft().getTitle().setText(propertyName);
+                contentPane.add(propertyChart3);
+                repaint();
+                break;
+            case 4:
+                propertyChart4.getAxes().getLeft().getTitle().setText(propertyName);
+                contentPane.add(propertyChart4);
+                repaint();
+                break;
+            case 5:
+                propertyChart5.getAxes().getLeft().getTitle().setText(propertyName);
+                contentPane.add(propertyChart5);
+                repaint();
+                break;
+            case 6:
+                propertyChart6.getAxes().getLeft().getTitle().setText(propertyName);
+                contentPane.add(propertyChart6);
+                repaint();
+                break;
+        }
+        Noofproperty++;
+    }
+    
 }

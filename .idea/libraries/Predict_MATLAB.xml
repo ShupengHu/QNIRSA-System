@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Predict_MATLAB">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/methods/Predict_MATLAB.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
