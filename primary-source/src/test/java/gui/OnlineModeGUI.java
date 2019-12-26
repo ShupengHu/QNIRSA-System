@@ -63,7 +63,7 @@ public class OnlineModeGUI extends JFrame {
 	private WriteSheet writeSheet = EasyExcel.writerSheet("sheet1").build();
     boolean isStopped=false;
 
-    //components
+    //GUI components
     private JPanel contentPane;
     private TChart spectrumChart1;
     private TChart spectrumChart2;
@@ -239,6 +239,7 @@ public class OnlineModeGUI extends JFrame {
         propertyChart6.getAxes().getBottom().getTitle().setText("Number of Samples");
         propertyChart6.getAxes().getBottom().getTitle().getFont().setSize(20);
         propertyChart6.getAxes().getBottom().getTitle().getFont().setColor(Color.blue);
+
         //-------set buttons------------//
         SCMButton=new JButton("SCM");
         SCMButton.setBounds(new Rectangle(0, 10, 70, 50));
@@ -320,8 +321,6 @@ public class OnlineModeGUI extends JFrame {
         contentPane.add(runButton);
         contentPane.add(autoRunButton);
         contentPane.add(stopButton);
-
-
     }
 
     /**
@@ -392,6 +391,7 @@ public class OnlineModeGUI extends JFrame {
         getData();
 
         //draw real-time original spectrum
+        spectrumChart1.removeAllSeries();
         spectrumChart1.getSeries(0).add(wavelengths,spectrum);
         spectrumChart1.repaint();
 
@@ -399,6 +399,7 @@ public class OnlineModeGUI extends JFrame {
         preProcess(DataProcessor.oneDToTwoDArray(spectrum));
 
         //draw real-time pre-processed spectrum
+        spectrumChart2.removeAllSeries();
         spectrumChart2.getSeries(0).add(wavelengths,spectraAfterPreProcess[0]);
         spectrumChart2.repaint();
 
@@ -429,76 +430,97 @@ public class OnlineModeGUI extends JFrame {
         switch (Noofproperty){
             case 1:
                 list1.add(predictions[0][0]);
+                propertyChart1.removeAllSeries();
                 propertyChart1.getSeries(0).add(getX_axis(list1.size()),list1);
                 propertyChart1.repaint();
                 break;
             case 2:
                 list1.add(predictions[0][0]);
+                propertyChart1.removeAllSeries();
                 propertyChart1.getSeries(0).add(getX_axis(list1.size()), list1);
                 propertyChart1.repaint();
                 list2.add(predictions[0][1]);
+                propertyChart2.removeAllSeries();
                 propertyChart2.getSeries(0).add(getX_axis(list2.size()), list2);
                 propertyChart2.repaint();
                 break;
             case 3:
                 list1.add(predictions[0][0]);
+                propertyChart1.removeAllSeries();
                 propertyChart1.getSeries(0).add(getX_axis(list1.size()), list1);
                 propertyChart1.repaint();
                 list2.add(predictions[0][1]);
+                propertyChart2.removeAllSeries();
                 propertyChart2.getSeries(0).add(getX_axis(list2.size()), list2);
                 propertyChart2.repaint();
                 list3.add(predictions[0][2]);
+                propertyChart3.removeAllSeries();
                 propertyChart3.getSeries(0).add(getX_axis(list3.size()), list3);
                 propertyChart3.repaint();
                 break;
             case 4:
                 list1.add(predictions[0][0]);
+                propertyChart1.removeAllSeries();
                 propertyChart1.getSeries(0).add(getX_axis(list1.size()),list1);
                 propertyChart1.repaint();
                 list2.add(predictions[0][1]);
+                propertyChart2.removeAllSeries();
                 propertyChart2.getSeries(0).add(getX_axis(list2.size()),  list2);
                 propertyChart2.repaint();
                 list3.add(predictions[0][2]);
+                propertyChart3.removeAllSeries();
                 propertyChart3.getSeries(0).add(getX_axis(list3.size()), list3);
                 propertyChart3.repaint();
                 list4.add(predictions[0][3]);
+                propertyChart4.removeAllSeries();
                 propertyChart4.getSeries(0).add(getX_axis(list4.size()), list4);
                 propertyChart4.repaint();
                 break;
             case 5:
                 list1.add(predictions[0][0]);
+                propertyChart1.removeAllSeries();
                 propertyChart1.getSeries(0).add(getX_axis(list1.size()), list1);
                 propertyChart1.repaint();
                 list2.add(predictions[0][1]);
+                propertyChart2.removeAllSeries();
                 propertyChart2.getSeries(0).add(getX_axis(list2.size()), list2);
                 propertyChart2.repaint();
                 list3.add(predictions[0][2]);
+                propertyChart3.removeAllSeries();
                 propertyChart3.getSeries(0).add(getX_axis(list3.size()), list3);
                 propertyChart3.repaint();
                 list4.add(predictions[0][3]);
+                propertyChart4.removeAllSeries();
                 propertyChart4.getSeries(0).add(getX_axis(list4.size()), list4);
                 propertyChart4.repaint();
                 list5.add(predictions[0][4]);
+                propertyChart5.removeAllSeries();
                 propertyChart5.getSeries(0).add(getX_axis(list5.size()), list5);
                 propertyChart5.repaint();
                 break;
             case 6:
                 list1.add(predictions[0][0]);
+                propertyChart1.removeAllSeries();
                 propertyChart1.getSeries(0).add(getX_axis(list1.size()), list1);
                 propertyChart1.repaint();
                 list2.add(predictions[0][1]);
+                propertyChart2.removeAllSeries();
                 propertyChart2.getSeries(0).add(getX_axis(list2.size()),  list2);
                 propertyChart2.repaint();
                 list3.add(predictions[0][2]);
+                propertyChart3.removeAllSeries();
                 propertyChart3.getSeries(0).add(getX_axis(list3.size()), list3);
                 propertyChart3.repaint();
                 list4.add(predictions[0][3]);
+                propertyChart4.removeAllSeries();
                 propertyChart4.getSeries(0).add(getX_axis(list4.size()),  list4);
                 propertyChart4.repaint();
                 list5.add(predictions[0][4]);
+                propertyChart5.removeAllSeries();
                 propertyChart5.getSeries(0).add(getX_axis(list5.size()),  list5);
                 propertyChart5.repaint();
                 list6.add(predictions[0][5]);
+                propertyChart6.removeAllSeries();
                 propertyChart6.getSeries(0).add(getX_axis(list6.size()),  list6);
                 propertyChart6.repaint();
                 break;
@@ -609,6 +631,8 @@ public class OnlineModeGUI extends JFrame {
             case "SG":
                 sg_java=(SG_JAVA)o;
                 break;
+            case "None":
+                break;
         }
     }
     /**
@@ -633,6 +657,8 @@ public class OnlineModeGUI extends JFrame {
                 sg_java.parseResult();
                 spectraAfterPreProcess=sg_java.getResult();
                 break;
+            case "None":
+                spectraAfterPreProcess=data;
             default:
                 throw new IllegalStateException("Unexpected value: " + selectedPreprocessMethod);
         }
@@ -693,5 +719,5 @@ public class OnlineModeGUI extends JFrame {
         }
         Noofproperty++;
     }
-    
+
 }

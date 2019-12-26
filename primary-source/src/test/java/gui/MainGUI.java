@@ -30,9 +30,10 @@ public class MainGUI extends JFrame {
         mainGUI.setVisible(false);
     }
 
-    private void offlineButtonMouseClicked(MouseEvent e) {
+    private void offlineButtonMouseClicked(MouseEvent e) throws IOException {
         offlineModeGUI=new OfflineModeGUI();
         offlineModeGUI.setVisible(true);
+        offlineModeGUI.setOfflineModeGUI(offlineModeGUI);
         mainGUI.setVisible(false);
     }
 
@@ -82,7 +83,11 @@ public class MainGUI extends JFrame {
                 offlineButton.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        offlineButtonMouseClicked(e);
+                        try {
+                            offlineButtonMouseClicked(e);
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
                     }
                 });
                 contentPanel.add(offlineButton);

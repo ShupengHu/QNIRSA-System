@@ -61,6 +61,9 @@ public class PreProcessGUI extends JFrame {
                 sg_java.setParameter(Integer.parseInt(wlField.getText()),Integer.parseInt(pfoField.getText()), (Integer) docomboBox.getSelectedItem());
                 onlineModeGUI.setPreProcessMethod("SG",sg_java);
                 break;
+            case "None":
+                onlineModeGUI.setPreProcessMethod("None",null);
+                break;
         }
         this.setVisible(false);
     }
@@ -68,6 +71,7 @@ public class PreProcessGUI extends JFrame {
     private void comboBoxItemStateChanged(ItemEvent e) {
         switch (comboBox.getSelectedItem().toString()){
             case "SNV":
+            case "None":
                 contentPanel.remove(refSpectrumButton);
                 contentPanel.remove(wlLabel);
                 contentPanel.remove(pfoLabel);
@@ -149,10 +153,13 @@ public class PreProcessGUI extends JFrame {
                 confirmButton.setText("Confirm");
                 confirmButton.setFont(confirmButton.getFont().deriveFont(confirmButton.getFont().getSize() + 5f));
                 confirmButton.addMouseListener(new MouseAdapter() {
-                    @SneakyThrows
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        confirmButtonMouseClicked(e);
+                        try {
+                            confirmButtonMouseClicked(e);
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
                     }
                 });
                 contentPanel.add(confirmButton);
@@ -168,7 +175,8 @@ public class PreProcessGUI extends JFrame {
                 comboBox.setModel(new DefaultComboBoxModel<>(new String[] {
                     "SNV",
                     "MSC",
-                    "SG"
+                    "SG",
+                    "None"
                 }));
                 comboBox.addItemListener(new ItemListener() {
                     @Override
