@@ -46,7 +46,7 @@ public class OnlineModeGUI extends JFrame {
     private String selectedSpectrometer="";
     private double[] wavelengths;
     private double[] spectrum;
-    private String selectedPreprocessMethod;
+    private String selectedPreprocessMethod="";
     private double[][] spectraAfterPreProcess;
     private double[][] model;
     private double[][] predictions;
@@ -635,6 +635,7 @@ public class OnlineModeGUI extends JFrame {
                 break;
         }
     }
+
     /**
      * invoke preprocess methods
      * @param data

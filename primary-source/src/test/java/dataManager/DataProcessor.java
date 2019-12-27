@@ -76,9 +76,9 @@ public class DataProcessor {
         double[][] d = null;
         switch (templateName){
             case "Wavelength":
-                d=new double[data.size()][1];
+                d=new double[1][data.size()];
                 for (int i=0; i< data.size();i++){
-                    d[i][0]= ((Wavelength)data.get(i)).getWavelength();
+                    d[0][i]= ((Wavelength)data.get(i)).getWavelength();
         }
                 break;
             case "Model":
@@ -92,12 +92,14 @@ public class DataProcessor {
                 for (int i=0; i< data.size();i++){
                     d[i][0]= ((Rice)data.get(i)).getProtein();
                 }
+                break;
             case "Urea":
                 d=new double[data.size()][2];
                 for (int i=0; i< data.size();i++){
                     d[i][0]= ((Urea)data.get(i)).getBiuret();
                     d[i][1]= ((Urea)data.get(i)).getWater();
                 }
+                break;
             default:
                 throw new IllegalStateException("Unexpected value: " + templateName);
         }
@@ -127,9 +129,9 @@ public class DataProcessor {
         switch (templateName){
             case "Wavelength":
                 list = new ArrayList<Object>();
-                for(int i=0;i<data.length;i++){
+                for(int i=0;i<data[0].length;i++){
                     Wavelength wavelength=new Wavelength();
-                    wavelength.setWavelength(data[i][0]);
+                    wavelength.setWavelength(data[0][i]);
                     list.add(wavelength);
                 }
                 break;

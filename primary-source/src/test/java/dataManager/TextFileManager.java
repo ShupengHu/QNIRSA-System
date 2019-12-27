@@ -12,7 +12,7 @@ public class TextFileManager {
      * @param fileName 记事本文件名
      * @throws IOException
      */
-    public void writeText(double[] data, String fileName) throws IOException{
+    public static void writeText(double[] data, String fileName) throws IOException{
         //create text file if it is nonexistent
         File file=new File(fileName);
         if(!file.exists()){

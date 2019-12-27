@@ -13,31 +13,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ExcelManager {
-    private static List<Object> listO=new ArrayList<Object>();
-    private static List<double[]> listD=new ArrayList<double[]>();
 
     /**
      * Import data from excel with template
      * @param fileName
      * @param c template class
      * @throws Exception
+     * @return
      */
-    public static void readExcel(String fileName, Class c) throws Exception{
+    public static List<Object> readExcel(String fileName, Class c) throws Exception{
+        List<Object> list=new ArrayList<Object>();
         ExcelListener el=new ExcelListener();
         EasyExcel.read(fileName, c, el).sheet().doRead();
-        listO = el.getList();
+        list = el.getList();
+        return list;
     }
 
     /**
      * Import data from excel without template
      * @param fileName
      * @throws Exception
+     * @return
      */
-    public static void readExcel(String fileName) throws Exception{
+    public static List<double[]> readExcel(String fileName) throws Exception{
+        List<double[]> list =new ArrayList<double[]>();
         InputStream is=new FileInputStream(fileName);
         XSSFWorkbook excel=new XSSFWorkbook(is);
         XSSFSheet sheet=excel.getSheetAt(0);
-        listD =new ArrayList<double[]>();
         /**
          *loop for extracting data from excel
          *Example: excel size= 201x936. sheet.getLastRowNum()=200; row.getLastCellNum()=936
@@ -49,9 +51,10 @@ public class ExcelManager {
                 XSSFCell cell=row.getCell(j);
                 d[j]=cell.getNumericCellValue();
             }
-            listD.add(d);
+            list.add(d);
         }
         is.close();
+        return list;
     }
 
     /**
@@ -107,13 +110,4 @@ public class ExcelManager {
         excelWriter.finish();
     }
 
-    public static List<Object> getListO(){
-
-        return listO;
-    }
-
-    public static List<double[]> getListD(){
-
-        return listD;
-    }
 }

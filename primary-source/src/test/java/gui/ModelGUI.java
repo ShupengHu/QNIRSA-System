@@ -48,9 +48,7 @@ public class ModelGUI extends JFrame {
 
     private void confirmButtonMouseClicked(MouseEvent e) throws Exception {
         //set model
-        ExcelManager excelManager= new ExcelManager();
-        excelManager.readExcel(filePath, Model.class);
-        model=excelManager.getListO();
+        model=ExcelManager.readExcel(filePath, Model.class);
         onlineModeGUI.setModel(DataProcessor.listToDoubleArray2(model,"Model"));
         //set sample category
         onlineModeGUI.setSampleCategory(comboBox1.getSelectedItem().toString());

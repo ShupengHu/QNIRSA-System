@@ -1,0 +1,92 @@
+JFDML JFormDesigner: "7.0.0.6.255" Java: "11.0.4" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+			name: "this"
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+				name: "dialogPane"
+				"border": new javax.swing.border.EmptyBorder( 12, 12, 12, 12 )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jformdesigner.runtime.NullLayout ) ) {
+					name: "contentPanel"
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "spectraButton"
+						"text": "Import Spectra"
+						"font": new com.jformdesigner.model.SwingDerivedFont( null, 0, 3, false )
+						addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "spectraButtonMouseClicked", true ) )
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+						"width": 195
+						"x": 15
+						"y": 15
+						"height": 60
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "wavelengthButton"
+						"text": "Import Wavelength"
+						"font": new com.jformdesigner.model.SwingDerivedFont( null, 0, 3, false )
+						addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "wavelengthButtonMouseClicked", true ) )
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+						"width": 195
+						"x": 290
+						"y": 15
+						"height": 60
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "referenceButton"
+						"text": "Import Reference Data"
+						"font": new com.jformdesigner.model.SwingDerivedFont( null, 0, 3, false )
+						addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "referenceButtonMouseClicked", true ) )
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+						"width": 230
+						"height": 60
+						"x": 5
+						"y": 165
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "confirmButton"
+						"text": "Confirm"
+						"font": new com.jformdesigner.model.SwingDerivedFont( null, 0, 3, false )
+						addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "confirmButtonMouseClicked", true ) )
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+						"width": 105
+						"height": 60
+						"x": 190
+						"y": 280
+					} )
+					add( new FormComponent( "javax.swing.JComboBox" ) {
+						name: "comboBox1"
+						"font": new com.jformdesigner.model.SwingDerivedFont( null, 0, 3, false )
+						"model": new javax.swing.DefaultComboBoxModel {
+							selectedItem: "Rice"
+							addElement( "Rice" )
+							addElement( "Urea" )
+						}
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+						"x": 335
+						"y": 185
+						"width": 90
+						"height": 35
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label1"
+						"text": "Choose Sample Category"
+						"font": new com.jformdesigner.model.SwingDerivedFont( null, 0, 3, false )
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+						"x": 295
+						"y": 135
+						"width": 195
+						"height": 50
+					} )
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "Center"
+				} )
+			}, new FormLayoutConstraints( class java.lang.String ) {
+				"value": "Center"
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 60, 75 )
+			"size": new java.awt.Dimension( 545, 420 )
+		} )
+	}
+}

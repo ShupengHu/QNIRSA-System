@@ -22,18 +22,13 @@ public class Test {
     }
 
     public  static void testMethod() throws Exception {
-
-        ExcelManager em=new ExcelManager();
         List<double[]> list1=new ArrayList<double[]>();
         List<Object> list2=new ArrayList<Object>();
         List<double[]> list3=new ArrayList<double[]>();
-
-        em.readExcel(filePath+"Spectra-SRK.xlsx");
-        list1=em.getListD();
+        list1= ExcelManager.readExcel(filePath+"Spectra-SRK.xlsx");
         double[][] data= DataProcessor.listToDoubleArray1(list1);
         System.out.println(data[0][0]);
-        em.readExcel(filePath+"Wavelength-Rice.xlsx", Wavelength.class);
-        list2=em.getListO();
+        list2=ExcelManager.readExcel(filePath+"Wavelength-Rice.xlsx", Wavelength.class);
         double[][] wavelength= DataProcessor.listToDoubleArray2(list2,"Wavelength");
         System.out.println(wavelength[0][0]);
 
@@ -43,7 +38,7 @@ public class Test {
         sg_java.invokeMethod(data);
         sg_java.parseResult();
         double[][] result=sg_java.getResult();
-        em.writeExcel(filePath+"afterPreProcess.xlsx",result);
+        ExcelManager.writeExcel(filePath+"afterPreProcess.xlsx",result);
     }
 
     public static void testExcel() throws Exception {
