@@ -5,7 +5,6 @@ import com.steema.teechart.styles.Line;
 import com.steema.teechart.styles.Series;
 import dataManager.DataProcessor;
 import methodsLibrary.*;
-import org.apache.poi.ss.formula.functions.T;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,6 +24,10 @@ public class OfflineModeGUI extends JFrame {
     private SA_JAVA sa_java;
     private PLSR_JAVA plsr_java;
     private SPA_JAVA spa_java;
+    private IPLS_JAVA ipls_java;
+    private BIPLS_JAVA bipls_java;
+    private FIPLS_JAVA fipls_java;
+    private GA_JAVA ga_java;
 
     //parameters
     private double[][] spectra;
@@ -226,13 +229,17 @@ public class OfflineModeGUI extends JFrame {
             return;
         }
 
+        System.out.println("Off-line Mode is Running!");
+
         //pre-processing data
+        System.out.println("Pre-processing is Running!");
         preProcess(spectra);
         System.out.println("Pre-processing finished");
         //draw pre-processed spectra
         drawSpectra(spectraAfterPreProcess,this.wavelength,preprocessChart);
 
         //data partition
+        System.out.println("Data Partition is Running!");
         dataPartition(spectraAfterPreProcess);
         System.out.println("Data Partition finished");
         //draw spectra of training set and validation set respectively
@@ -240,12 +247,14 @@ public class OfflineModeGUI extends JFrame {
         drawSpectra(VsetSpectra,this.wavelength,VsetChart);
 
         //variable selection
+        System.out.println("Variable Selection is Running!");
         variableSelection(TsetSpectra);
         System.out.println("Variable Selection finished");
         //draw selected spectra of training set
         drawSpectra(selectedTsetSpectra,selectedWavelength,variableSelectionChart);
 
         //calibration
+        System.out.println("Calibration is Running!");
         calibration(selectedTsetSpectra);
         System.out.println("Calibration finished");
         //display final results
@@ -380,6 +389,18 @@ public class OfflineModeGUI extends JFrame {
             case "SPA":
                 spa_java=(SPA_JAVA) o;
                 break;
+            case "iPLS":
+                ipls_java=(IPLS_JAVA)o;
+                break;
+            case "FiPLS":
+                fipls_java=(FIPLS_JAVA) o;
+                break;
+            case "BiPLS":
+                bipls_java=(BIPLS_JAVA) o;
+                break;
+            case "GA":
+                ga_java=(GA_JAVA) o;
+                break;
         }
     }
 
@@ -421,6 +442,42 @@ public class OfflineModeGUI extends JFrame {
                 selectedTsetSpectra=spa_java.getSelectedTsetSpectra();
                 selectedVsetSpectra=spa_java.getSelectedVsetSpectra();
                 selectedWavelength=DataProcessor.selectWavelength(spa_java.getIndex(),this.wavelength);
+                break;
+            case "iPLS":
+                ipls_java.setTsetRefData(TsetRefData);
+                ipls_java.setVsetSpectra(VsetSpectra);
+                ipls_java.invokeMethod(data);
+                ipls_java.parseResult();
+                selectedTsetSpectra=ipls_java.getSelectedTsetSpectra();
+                selectedVsetSpectra=ipls_java.getSelectedVsetSpectra();
+                selectedWavelength=DataProcessor.selectWavelength(ipls_java.getIndex(),this.wavelength);
+                break;
+            case "FiPLS":
+                fipls_java.setTsetRefData(TsetRefData);
+                fipls_java.setVsetSpectra(VsetSpectra);
+                fipls_java.invokeMethod(data);
+                bipls_java.parseResult();
+                selectedTsetSpectra=fipls_java.getSelectedTsetSpectra();
+                selectedVsetSpectra=fipls_java.getSelectedVsetSpectra();
+                selectedWavelength=DataProcessor.selectWavelength(fipls_java.getIndex(),this.wavelength);
+                break;
+            case "BiPLS":
+                bipls_java.setTsetRefData(TsetRefData);
+                bipls_java.setVsetSpectra(VsetSpectra);
+                bipls_java.invokeMethod(data);
+                bipls_java.parseResult();
+                selectedTsetSpectra=bipls_java.getSelectedTsetSpectra();
+                selectedVsetSpectra=bipls_java.getSelectedVsetSpectra();
+                selectedWavelength=DataProcessor.selectWavelength(bipls_java.getIndex(),this.wavelength);
+                break;
+            case "GA":
+                ga_java.setTsetRefData(TsetRefData);
+                ga_java.setVsetSpectra(VsetSpectra);
+                ga_java.invokeMethod(data);
+                ga_java.parseResult();
+                selectedTsetSpectra=ga_java.getSelectedTsetSpectra();
+                selectedVsetSpectra=ga_java.getSelectedVsetSpectra();
+                selectedWavelength=DataProcessor.selectWavelength(ga_java.getIndex(),this.wavelength);
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + selectedVariableSelectionMethod);

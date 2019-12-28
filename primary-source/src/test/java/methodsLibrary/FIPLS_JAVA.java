@@ -1,31 +1,31 @@
 package methodsLibrary;
 
-
-import SPA_MATLAB.SPAMATLAB;
+import BIPLS_MATLAB.BIPLSMATLAB;
+import FIPLS_MATLAB.FIPLSMATLAB;
 import com.mathworks.toolbox.javabuilder.MWException;
 import com.mathworks.toolbox.javabuilder.MWNumericArray;
 import dataManager.DataProcessor;
 
-public class SPA_JAVA implements Method{
+public class FIPLS_JAVA implements Method{
     private Object[] result;
     private MWNumericArray matrix;
-    private MWNumericArray VsetX;
     private MWNumericArray TsetY;
-    private MWNumericArray VsetY;
+    private MWNumericArray VsetX;
+    private int componentNo;
     private double[][] index;
     private double[][] selectedTsetSpectra;
     private double[][] selectedVsetSpectra;
 
-    public void setTsetY(double[][] TsetRefData){
-        TsetY= DataProcessor.doubleArrayToMatrix(TsetRefData);
+    public void setParameters(int componentNo){
+        this.componentNo=componentNo;
     }
 
-    public void setVsetX(double[][] VsetSpectra){
+    public void setVsetSpectra(double[][] VsetSpectra){
         VsetX= DataProcessor.doubleArrayToMatrix(VsetSpectra);
     }
 
-    public void setVsetY(double[][] TsetRefData){
-        VsetY=DataProcessor.doubleArrayToMatrix(TsetRefData);
+    public void setTsetRefData(double[][] TsetRefData){
+        TsetY= DataProcessor.doubleArrayToMatrix(TsetRefData);
     }
 
     @Override
@@ -34,9 +34,9 @@ public class SPA_JAVA implements Method{
 
         //invoke MATLAB method
         try {
-            SPAMATLAB spamatlab=new SPAMATLAB();
+            FIPLSMATLAB fiplsmatlab=new FIPLSMATLAB();
             //the first integer parameter means how many objects will return in result
-            result=spamatlab.SPA(3, matrix,TsetY,VsetX,VsetY);
+            result=fiplsmatlab.FiPLS(5, matrix,TsetY,VsetX,componentNo,-1);
         } catch (MWException e) {
             e.printStackTrace();
         }
@@ -44,9 +44,9 @@ public class SPA_JAVA implements Method{
 
     @Override
     public void parseResult() {
-        index=(double[][]) ((MWNumericArray)result[0]).toDoubleArray();
-        selectedTsetSpectra=(double[][]) ((MWNumericArray)result[1]).toDoubleArray();
-        selectedVsetSpectra=(double[][]) ((MWNumericArray)result[2]).toDoubleArray();
+        index=(double[][]) ((MWNumericArray)result[1]).toDoubleArray();
+        selectedTsetSpectra=(double[][]) ((MWNumericArray)result[3]).toDoubleArray();
+        selectedVsetSpectra=(double[][]) ((MWNumericArray)result[4]).toDoubleArray();
     }
 
     @Override

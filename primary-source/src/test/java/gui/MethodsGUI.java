@@ -47,6 +47,14 @@ public class MethodsGUI extends JFrame {
         contentPanel.remove(cooltextField);
         contentPanel.remove(stopTlabel);
         contentPanel.remove(stopTtextField);
+        contentPanel.remove(chromosomeField);
+        contentPanel.remove(chromosomelabel);
+        contentPanel.remove(generationField);
+        contentPanel.remove(generationLabel);
+        contentPanel.remove(crossoverField);
+        contentPanel.remove(crossoverlabel);
+        contentPanel.remove(mutationField);
+        contentPanel.remove(mutationlabel);
 
         repaint();
     }
@@ -120,6 +128,26 @@ public class MethodsGUI extends JFrame {
                 SPA_JAVA spa_java=new SPA_JAVA();
                 offlineModeGUI.setVariableSelectionMethod("SPA",spa_java);
                 break;
+            case "iPLS":
+                IPLS_JAVA ipls_java=new IPLS_JAVA();
+                ipls_java.setParameters(Integer.parseInt(compnenttextField.getText()));
+                offlineModeGUI.setVariableSelectionMethod("iPLS",ipls_java);
+                break;
+            case "FiPLS":
+                FIPLS_JAVA fipls_java=new FIPLS_JAVA();
+                fipls_java.setParameters(Integer.parseInt(compnenttextField.getText()));
+                offlineModeGUI.setVariableSelectionMethod("FiPLS",fipls_java);
+                break;
+            case "BiPLS":
+                BIPLS_JAVA bipls_java=new BIPLS_JAVA();
+                bipls_java.setParameters(Integer.parseInt(compnenttextField.getText()));
+                offlineModeGUI.setVariableSelectionMethod("BiPLS",bipls_java);
+                break;
+            case "GA":
+                GA_JAVA ga_java=new GA_JAVA();
+                ga_java.setParameters(Integer.parseInt(compnenttextField.getText()),Double.parseDouble(chromosomeField.getText()),Double.parseDouble(generationField.getText()),Double.parseDouble(crossoverField.getText()),Double.parseDouble(mutationField.getText()));
+                offlineModeGUI.setVariableSelectionMethod("GA",ga_java);
+                break;
 
         }
         //calibration
@@ -180,6 +208,14 @@ public class MethodsGUI extends JFrame {
                 contentPanel.remove(cooltextField);
                 contentPanel.remove(stopTlabel);
                 contentPanel.remove(stopTtextField);
+                contentPanel.remove(chromosomeField);
+                contentPanel.remove(chromosomelabel);
+                contentPanel.remove(generationField);
+                contentPanel.remove(generationLabel);
+                contentPanel.remove(crossoverField);
+                contentPanel.remove(crossoverlabel);
+                contentPanel.remove(mutationField);
+                contentPanel.remove(mutationlabel);
                 repaint();
                 break;
             case "SA":
@@ -193,11 +229,51 @@ public class MethodsGUI extends JFrame {
                 contentPanel.add(cooltextField);
                 contentPanel.add(stopTlabel);
                 contentPanel.add(stopTtextField);
+                contentPanel.remove(chromosomeField);
+                contentPanel.remove(chromosomelabel);
+                contentPanel.remove(generationField);
+                contentPanel.remove(generationLabel);
+                contentPanel.remove(crossoverField);
+                contentPanel.remove(crossoverlabel);
+                contentPanel.remove(mutationField);
+                contentPanel.remove(mutationlabel);
                 repaint();
                 break;
             case "UVE":
+            case "iPLS":
+            case "FiPLS":
+            case "BiPLS":
                 contentPanel.add(compnenttextField);
                 contentPanel.add(componentlabel);
+                contentPanel.remove(initialElabel);
+                contentPanel.remove(initialEtextField);
+                contentPanel.remove(initialTlabel);
+                contentPanel.remove(initialTtextField);
+                contentPanel.remove(coollabel);
+                contentPanel.remove(cooltextField);
+                contentPanel.remove(stopTlabel);
+                contentPanel.remove(stopTtextField);
+                contentPanel.remove(chromosomeField);
+                contentPanel.remove(chromosomelabel);
+                contentPanel.remove(generationField);
+                contentPanel.remove(generationLabel);
+                contentPanel.remove(crossoverField);
+                contentPanel.remove(crossoverlabel);
+                contentPanel.remove(mutationField);
+                contentPanel.remove(mutationlabel);
+                repaint();
+                break;
+            case "GA":
+                contentPanel.add(compnenttextField);
+                contentPanel.add(componentlabel);
+                contentPanel.add(chromosomeField);
+                contentPanel.add(chromosomelabel);
+                contentPanel.add(generationField);
+                contentPanel.add(generationLabel);
+                contentPanel.add(crossoverField);
+                contentPanel.add(crossoverlabel);
+                contentPanel.add(mutationField);
+                contentPanel.add(mutationlabel);
                 contentPanel.remove(initialElabel);
                 contentPanel.remove(initialEtextField);
                 contentPanel.remove(initialTlabel);
@@ -210,8 +286,6 @@ public class MethodsGUI extends JFrame {
                 break;
         }
     }
-
-    private void comboBoxItemStateChanged(ItemEvent e) { }
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
@@ -247,6 +321,14 @@ public class MethodsGUI extends JFrame {
         label5 = new JLabel();
         label6 = new JLabel();
         pcField = new JTextField();
+        chromosomelabel = new JLabel();
+        chromosomeField = new JTextField();
+        generationLabel = new JLabel();
+        generationField = new JTextField();
+        crossoverlabel = new JLabel();
+        mutationlabel = new JLabel();
+        crossoverField = new JTextField();
+        mutationField = new JTextField();
 
         //======== this ========
         Container contentPane = getContentPane();
@@ -278,7 +360,6 @@ public class MethodsGUI extends JFrame {
                 preprocesscomboBox.addItemListener(new ItemListener() {
                     @Override
                     public void itemStateChanged(ItemEvent e) {
-                        comboBoxItemStateChanged(e);
                         preprocesscomboBoxItemStateChanged(e);
                     }
                 });
@@ -388,7 +469,6 @@ public class MethodsGUI extends JFrame {
                 variableSelectioncomboBox.addItemListener(new ItemListener() {
                     @Override
                     public void itemStateChanged(ItemEvent e) {
-                        comboBoxItemStateChanged(e);
                         variableSelectioncomboBoxItemStateChanged(e);
                     }
                 });
@@ -449,6 +529,38 @@ public class MethodsGUI extends JFrame {
                 contentPanel.add(pcField);
                 pcField.setBounds(180, 505, 79, 34);
 
+                //---- chromosomelabel ----
+                chromosomelabel.setText("ChromosomeNo");
+                chromosomelabel.setFont(chromosomelabel.getFont().deriveFont(chromosomelabel.getFont().getSize() + 2f));
+                contentPanel.add(chromosomelabel);
+                chromosomelabel.setBounds(5, 360, 125, 40);
+                contentPanel.add(chromosomeField);
+                chromosomeField.setBounds(125, 365, 80, 30);
+
+                //---- generationLabel ----
+                generationLabel.setText("MaxGeneration");
+                generationLabel.setFont(generationLabel.getFont().deriveFont(generationLabel.getFont().getSize() + 2f));
+                contentPanel.add(generationLabel);
+                generationLabel.setBounds(240, 360, 125, 40);
+                contentPanel.add(generationField);
+                generationField.setBounds(345, 365, 80, 30);
+
+                //---- crossoverlabel ----
+                crossoverlabel.setText("p_crossover");
+                crossoverlabel.setFont(crossoverlabel.getFont().deriveFont(crossoverlabel.getFont().getSize() + 2f));
+                contentPanel.add(crossoverlabel);
+                crossoverlabel.setBounds(10, 425, 90, 40);
+
+                //---- mutationlabel ----
+                mutationlabel.setText("p_mutation");
+                mutationlabel.setFont(mutationlabel.getFont().deriveFont(mutationlabel.getFont().getSize() + 2f));
+                contentPanel.add(mutationlabel);
+                mutationlabel.setBounds(240, 425, 90, 40);
+                contentPanel.add(crossoverField);
+                crossoverField.setBounds(95, 430, 80, 30);
+                contentPanel.add(mutationField);
+                mutationField.setBounds(320, 430, 80, 30);
+
                 {
                     // compute preferred size
                     Dimension preferredSize = new Dimension();
@@ -505,11 +617,14 @@ public class MethodsGUI extends JFrame {
     private JLabel label5;
     private JLabel label6;
     private JTextField pcField;
+    private JLabel chromosomelabel;
+    private JTextField chromosomeField;
+    private JLabel generationLabel;
+    private JTextField generationField;
+    private JLabel crossoverlabel;
+    private JLabel mutationlabel;
+    private JTextField crossoverField;
+    private JTextField mutationField;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 
-    public static void main(String[] args) throws IOException {
-        OfflineModeGUI offlineModeGUI= new OfflineModeGUI();
-        MethodsGUI methodsGUI=new MethodsGUI(offlineModeGUI);
-        methodsGUI.setVisible(true);
-    }
 }

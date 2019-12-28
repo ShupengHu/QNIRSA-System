@@ -1,31 +1,31 @@
 package methodsLibrary;
 
-
-import SPA_MATLAB.SPAMATLAB;
+import IPLS_MATLAB.IPLSMATLAB;
+import UVE_MATLAB.UVEMATLAB;
 import com.mathworks.toolbox.javabuilder.MWException;
 import com.mathworks.toolbox.javabuilder.MWNumericArray;
 import dataManager.DataProcessor;
 
-public class SPA_JAVA implements Method{
+public class IPLS_JAVA implements Method{
     private Object[] result;
     private MWNumericArray matrix;
-    private MWNumericArray VsetX;
     private MWNumericArray TsetY;
-    private MWNumericArray VsetY;
+    private MWNumericArray VsetX;
+    private int componentNo;
     private double[][] index;
     private double[][] selectedTsetSpectra;
     private double[][] selectedVsetSpectra;
 
-    public void setTsetY(double[][] TsetRefData){
+    public void setParameters(int componentNo){
+        this.componentNo=componentNo;
+    }
+
+    public void setTsetRefData(double[][] TsetRefData){
         TsetY= DataProcessor.doubleArrayToMatrix(TsetRefData);
     }
 
-    public void setVsetX(double[][] VsetSpectra){
+    public void setVsetSpectra(double[][] VsetSpectra){
         VsetX= DataProcessor.doubleArrayToMatrix(VsetSpectra);
-    }
-
-    public void setVsetY(double[][] TsetRefData){
-        VsetY=DataProcessor.doubleArrayToMatrix(TsetRefData);
     }
 
     @Override
@@ -34,9 +34,9 @@ public class SPA_JAVA implements Method{
 
         //invoke MATLAB method
         try {
-            SPAMATLAB spamatlab=new SPAMATLAB();
+            IPLSMATLAB iplsmatlab=new IPLSMATLAB();
             //the first integer parameter means how many objects will return in result
-            result=spamatlab.SPA(3, matrix,TsetY,VsetX,VsetY);
+            result=iplsmatlab.iPLS(7, matrix,TsetY,VsetX,componentNo,-1);
         } catch (MWException e) {
             e.printStackTrace();
         }
@@ -44,9 +44,9 @@ public class SPA_JAVA implements Method{
 
     @Override
     public void parseResult() {
-        index=(double[][]) ((MWNumericArray)result[0]).toDoubleArray();
-        selectedTsetSpectra=(double[][]) ((MWNumericArray)result[1]).toDoubleArray();
-        selectedVsetSpectra=(double[][]) ((MWNumericArray)result[2]).toDoubleArray();
+        index=(double[][]) ((MWNumericArray)result[4]).toDoubleArray();
+        selectedTsetSpectra=(double[][]) ((MWNumericArray)result[5]).toDoubleArray();
+        selectedVsetSpectra=(double[][]) ((MWNumericArray)result[6]).toDoubleArray();
     }
 
     @Override
@@ -65,4 +65,5 @@ public class SPA_JAVA implements Method{
     public double[][] getIndex(){
         return index;
     }
+
 }
