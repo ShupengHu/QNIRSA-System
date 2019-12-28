@@ -57,6 +57,20 @@ public class DataProcessor {
     }
 
     /**
+     * Round half up data keeping n digits after the decimal point
+     * @param data
+     * @param n digits after the decimal point
+     * @return
+     */
+    public static double roundData(double data, int n){
+        double d=0;
+        BigDecimal b = new BigDecimal(data);
+        d = b.setScale(n, BigDecimal.ROUND_HALF_UP).doubleValue();
+
+        return  d;
+    }
+
+    /**
      * convert list<double[]> into double array
      * @return
      */
@@ -196,4 +210,19 @@ public class DataProcessor {
         }
         return matrix;
     }
+
+    /**
+     * select wavelength
+     * @param index an index of selected variables returned from variable selection method
+     * @param wavelength
+     * @return
+     */
+    public static double[][] selectWavelength(double[][] index, double[][]wavelength){
+        double[][] selectedWavelength=new double[1][index[0].length];
+        for(int i=0;i<index[0].length;i++){
+            selectedWavelength[0][i]=wavelength[0][(int) index[0][i]];
+        }
+        return selectedWavelength;
+    }
+
 }

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="UVE_MATLAB">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/methods/UVE_MATLAB.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

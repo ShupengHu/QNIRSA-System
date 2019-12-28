@@ -93,15 +93,13 @@ public class ImportDataGUI extends JFrame {
         switch (comboBox1.getSelectedItem().toString()){
             case "Rice":
                 refData=DataProcessor.listToDoubleArray2(ExcelManager.readExcel(referencePath, Rice.class),"Rice");
-                sampleCategory="Rice";
                 break;
             case "Urea":
                 refData=DataProcessor.listToDoubleArray2(ExcelManager.readExcel(referencePath, Urea.class),"Urea");
-                sampleCategory="Urea";
                 break;
         }
         //set input in offlineMode GUI
-        offlineModeGUI.setInput(spectra,wavelength,refData,sampleCategory);
+        offlineModeGUI.setInput(spectra,wavelength,refData);
         this.setVisible(false);
     }
 

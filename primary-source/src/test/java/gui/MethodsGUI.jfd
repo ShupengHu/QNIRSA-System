@@ -29,8 +29,9 @@ new FormModel {
 							addElement( "SG" )
 							addElement( "None" )
 						}
-						"font": new com.jformdesigner.model.SwingDerivedFont( null, 0, 2, false )
+						"font": &SwingDerivedFont1 new com.jformdesigner.model.SwingDerivedFont( null, 0, 2, false )
 						addEvent( new FormEvent( "java.awt.event.ItemListener", "itemStateChanged", "comboBoxItemStateChanged", true ) )
+						addEvent( new FormEvent( "java.awt.event.ItemListener", "itemStateChanged", "preprocesscomboBoxItemStateChanged", true ) )
 					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 						"width": 65
 						"height": 40
@@ -129,8 +130,190 @@ new FormModel {
 						"x": 5
 						"y": 140
 					} )
+					add( new FormComponent( "javax.swing.JComboBox" ) {
+						name: "dataPartitioncomboBox"
+						"font": new com.jformdesigner.model.SwingDerivedFont( null, 0, 2, false )
+						"model": new javax.swing.DefaultComboBoxModel {
+							selectedItem: "KS"
+							addElement( "KS" )
+							addElement( "SPXY" )
+						}
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+						"x": 145
+						"y": 150
+						"width": 65
+						"height": 40
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label3"
+						"text": "No. of Samples for Trainning Set"
+						"font": new com.jformdesigner.model.SwingDerivedFont( null, 0, 3, false )
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+						"x": 235
+						"y": 130
+						"width": 250
+						"height": 70
+					} )
+					add( new FormComponent( "javax.swing.JTextField" ) {
+						name: "sampleForTsetField"
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+						"x": 490
+						"y": 150
+						"height": 35
+						"width": 85
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label4"
+						"text": "Variable Selection :"
+						"font": #SwingDerivedFont0
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+						"width": 160
+						"height": 65
+						"x": 5
+						"y": 225
+					} )
+					add( new FormComponent( "javax.swing.JComboBox" ) {
+						name: "variableSelectioncomboBox"
+						"model": new javax.swing.DefaultComboBoxModel {
+							selectedItem: "None"
+							addElement( "None" )
+							addElement( "SA" )
+							addElement( "GA" )
+							addElement( "SPA" )
+							addElement( "iPLS" )
+							addElement( "FiPLS" )
+							addElement( "BiPLS" )
+							addElement( "UVE" )
+						}
+						"font": #SwingDerivedFont1
+						addEvent( new FormEvent( "java.awt.event.ItemListener", "itemStateChanged", "comboBoxItemStateChanged", true ) )
+						addEvent( new FormEvent( "java.awt.event.ItemListener", "itemStateChanged", "variableSelectioncomboBoxItemStateChanged", true ) )
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+						"width": 65
+						"height": 40
+						"x": 165
+						"y": 240
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "componentlabel"
+						"text": "ComponentNo"
+						"font": new com.jformdesigner.model.SwingDerivedFont( null, 0, 2, false )
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+						"x": 240
+						"y": 230
+						"width": 105
+						"height": 55
+					} )
+					add( new FormComponent( "javax.swing.JTextField" ) {
+						name: "compnenttextField"
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+						"x": 340
+						"y": 240
+						"width": 80
+						"height": 30
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "initialElabel"
+						"text": "Initial Energy"
+						"font": new com.jformdesigner.model.SwingDerivedFont( null, 0, 2, false )
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+						"x": 10
+						"y": 290
+						"width": 100
+						"height": 45
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "coollabel"
+						"text": "Cooling Ratio"
+						"font": new com.jformdesigner.model.SwingDerivedFont( null, 0, 2, false )
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+						"x": 225
+						"y": 295
+						"width": 105
+						"height": 35
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "initialTlabel"
+						"text": "Initial T"
+						"font": new com.jformdesigner.model.SwingDerivedFont( null, 0, 2, false )
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+						"x": 470
+						"y": 240
+						"width": 65
+						"height": 30
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "stopTlabel"
+						"text": "Stop T"
+						"font": new com.jformdesigner.model.SwingDerivedFont( null, 0, 2, false )
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+						"x": 460
+						"y": 295
+						"width": 55
+						"height": 32
+					} )
+					add( new FormComponent( "javax.swing.JTextField" ) {
+						name: "initialTtextField"
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+						"width": 80
+						"height": 30
+						"x": 535
+						"y": 240
+					} )
+					add( new FormComponent( "javax.swing.JTextField" ) {
+						name: "initialEtextField"
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+						"width": 80
+						"height": 30
+						"x": 105
+						"y": 295
+					} )
+					add( new FormComponent( "javax.swing.JTextField" ) {
+						name: "cooltextField"
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+						"width": 80
+						"height": 30
+						"x": 320
+						"y": 300
+					} )
+					add( new FormComponent( "javax.swing.JTextField" ) {
+						name: "stopTtextField"
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+						"width": 80
+						"height": 30
+						"x": 515
+						"y": 300
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label5"
+						"text": "Calibration :"
+						"font": #SwingDerivedFont0
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+						"width": 110
+						"height": 65
+						"x": 5
+						"y": 490
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label6"
+						"text": "PCNo."
+						"font": new com.jformdesigner.model.SwingDerivedFont( null, 0, 5, false )
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+						"x": 115
+						"y": 500
+						"width": 70
+						"height": 40
+					} )
+					add( new FormComponent( "javax.swing.JTextField" ) {
+						name: "pcField"
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+						"x": 180
+						"y": 505
+						"width": 79
+						"height": 34
+					} )
 				}, new FormLayoutConstraints( class java.lang.String ) {
-					"value": "Center"
+					"value": "West"
 				} )
 			}, new FormLayoutConstraints( class java.lang.String ) {
 				"value": "Center"

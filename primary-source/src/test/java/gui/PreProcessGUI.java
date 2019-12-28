@@ -97,7 +97,6 @@ public class PreProcessGUI extends JFrame {
                 contentPanel.add(pfoField);
                 contentPanel.add(docomboBox);
                 repaint();
-                repaint();
                 break;
         }
     }

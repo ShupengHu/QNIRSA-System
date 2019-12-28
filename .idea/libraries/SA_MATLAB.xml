@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="SA_MATLAB">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/methods/SA_MATLAB.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
