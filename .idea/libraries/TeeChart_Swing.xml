@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="TeeChart.Swing">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/TeeChart.Swing.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

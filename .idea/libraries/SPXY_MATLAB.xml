@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="SPXY_MATLAB">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/methods/SPXY_MATLAB.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

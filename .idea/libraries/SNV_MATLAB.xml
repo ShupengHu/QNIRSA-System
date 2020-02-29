@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="SNV_MATLAB">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/methods/SNV_MATLAB.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="SPA_MATLAB">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/methods/SPA_MATLAB.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
